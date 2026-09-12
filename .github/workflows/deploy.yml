@@ -1,0 +1,58 @@
+# main に push すると Flutter Web をビルドして GitHub Pages に公開する
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.41.9'   # 手元と同じ版。上げるときはここも変える
+          channel: stable
+          cache: true
+
+      - run: flutter pub get
+
+      - run: flutter analyze
+
+      # リポジトリ名がそのまま公開パスになる（https://<user>.github.io/<repo>/）
+      - name: Build web
+        run: |
+          flutter build web --release --no-wasm-dry-run \
+            --base-href "/${{ github.event.repository.name }}/"
+
+      # Service Worker に版数（コミット SHA）と問題ファイル一覧を埋め込む
+      - name: Stamp service worker
+        run: python3 tools/stamp_sw.py "${GITHUB_SHA::12}"
+
+      - run: touch build/web/.nojekyll
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/web
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

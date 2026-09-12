@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- --base-href で置き換わる（GitHub Pages では /ama4_study/） -->
+  <base href="$FLUTTER_BASE_HREF">
+
+  <meta charset="UTF-8">
+  <meta name="description" content="第四級アマチュア無線技士 試験対策（個人用・音声読み上げ付き）">
+  <meta name="theme-color" content="#1E2B38">
+
+  <!-- ホーム画面に追加したとき全画面で起動する（iOS Safari） -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="4アマ ながら学習">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+
+  <link rel="icon" type="image/png" href="favicon.png"/>
+  <link rel="manifest" href="manifest.json">
+  <title>4アマ ながら学習</title>
+
+  <style>
+    html, body { background: #1E2B38; margin: 0; height: 100%; }
+    #splash {
+      position: fixed; inset: 0; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; color: #F5B041;
+      font-family: system-ui, sans-serif; font-size: 16px; gap: 12px;
+    }
+    #splash img { width: 96px; height: 96px; border-radius: 22px; }
+  </style>
+
+  <script>
+    // ---- 音声再生（VOICEVOX の音声ファイル）------------------------------
+    // iOS Safari は「ユーザー操作の中で play() された <audio> 要素」しか鳴らせない。
+    // そこで <audio> を 1 個だけ作り、最初のタップ（touchend/click）の同期処理の中で
+    // 無音の WAV を play() して、その要素を「鳴らしてよい要素」にしておく。
+    // 以後は同じ要素の src を差し替えて play() すれば、タップ無しでも連続再生できる。
+    // Dart 側（lib/services/voice_player_web.dart）はこの window.ama4Audio を呼ぶ。
+    window.ama4Audio = (function () {
+      var SILENT = 'data:audio/wav;base64,UklGRkQDAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YSADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==';
+      var audio = new Audio();
+      audio.preload = 'auto';
+      audio.setAttribute('playsinline', '');
+      var unlocked = false;
+      var pending = null; // { resolve, reject }
+
+      function finish(ok, err) {
+        var p = pending; pending = null;
+        if (!p) return;
+        ok ? p.resolve(true) : p.reject(err);
+      }
+      audio.addEventListener('ended', function () { finish(true); });
+      audio.addEventListener('error', function () {
+        var e = audio.error;
+        finish(false, new Error('audio error code=' + (e && e.code) + ' (load/decode failed)'));
+      });
+
+      function unlock() {
+        if (unlocked) return;
+        try {
+          audio.src = SILENT;
+          var p = audio.play();
+          if (p && p.then) {
+            p.then(function () { unlocked = true; audio.pause(); },
+                   function (e) { console.warn('audio unlock failed', e); });
+          } else { unlocked = true; }
+        } catch (e) { console.warn('audio unlock failed', e); }
+        // Web Speech API（VOICEVOX 音声が無い文の代替）も同じくタップの中で一度呼んでおく
+        try {
+          if (window.speechSynthesis) {
+            var u = new SpeechSynthesisUtterance(' ');
+            u.volume = 0; window.speechSynthesis.speak(u);
+          }
+        } catch (e) {}
+      }
+      ['touchend', 'click', 'keydown'].forEach(function (ev) {
+        document.addEventListener(ev, unlock, { capture: true, passive: true });
+      });
+
+      return {
+        isUnlocked: function () { return unlocked; },
+        play: function (url, rate) {
+          return new Promise(function (resolve, reject) {
+            finish(true); // 前の再生待ちがあれば終わらせる
+            pending = { resolve: resolve, reject: reject };
+            try {
+              audio.pause();
+              audio.src = url;
+              audio.playbackRate = rate || 1;
+              audio.load();
+              var p = audio.play();
+              if (p && p.then) {
+                p.then(function () { audio.playbackRate = rate || 1; })
+                 .catch(function (e) { finish(false, new Error((e && e.name) + ': ' + (e && e.message))); });
+              }
+            } catch (e) { finish(false, e); }
+          });
+        },
+        stop: function () {
+          try { audio.pause(); audio.currentTime = 0; } catch (e) {}
+          finish(true);
+        },
+        // Service Worker 経由で fetch するとキャッシュに入る。5 並列で順に取得。
+        prefetch: function (urls, cb) {
+          var i = 0, done = 0, failed = 0, total = urls.length;
+          function next() {
+            if (i >= total) return Promise.resolve();
+            var u = urls[i++];
+            return fetch(u, { cache: 'no-cache' })
+              .then(function (r) { if (!r.ok) failed++; })
+              .catch(function () { failed++; })
+              .then(function () { done++; cb(done, total); return next(); });
+          }
+          var workers = [];
+          for (var k = 0; k < 5; k++) workers.push(next());
+          return Promise.all(workers).then(function () {
+            if (failed) throw new Error(failed + ' 個の取得に失敗');
+          });
+        }
+      };
+    })();
+
+    // ---- オフライン用 Service Worker（web/sw.js）----------------------------
+    // flutter run（localhost）中はキャッシュが邪魔なので登録しない。?sw=1 を付ければ試せる
+    var isDev = /^(localhost|127\.0\.0\.1)$/.test(location.hostname) && !/[?&]sw=1/.test(location.search);
+    if ('serviceWorker' in navigator && !isDev) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('sw.js').catch(function (e) {
+          console.warn('sw register failed', e);
+        });
+      });
+    }
+  </script>
+</head>
+<body>
+  <div id="splash"><img src="icons/Icon-192.png" alt=""><div>読み込み中…</div></div>
+  <script src="flutter_bootstrap.js" async></script>
+</body>
+</html>

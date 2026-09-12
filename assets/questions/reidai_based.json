@@ -1,0 +1,1056 @@
+[
+ {
+  "id": "R-E1-01",
+  "subject": "法規",
+  "category": "目的・定義",
+  "question": "電波法施行規則にある「アマチュア業務」の定義で、［　］に入る語句はどれか。「金銭上の利益のためでなく、もっぱら個人的な無線技術の興味によって行う自己訓練、通信及び［　］その他総務大臣が別に告示する業務を行う無線通信業務をいう。」",
+  "choices": [
+   "技術的研究",
+   "公共の福祉",
+   "災害の救援",
+   "社会福祉"
+  ],
+  "answer": 1,
+  "explanation": "自己訓練・通信・技術的研究の3つがセット。「公共の福祉」は電波法の目的のほうに出てくる言葉なので混同しないこと。",
+  "source": "日本無線協会 CBT例題（4アマ）法規No.1 問1を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_E/4ama_E_01.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-E1-02",
+  "subject": "法規",
+  "category": "無線局の免許",
+  "question": "アマチュア局の免許人が、前もって総合通信局長の許可を受けなければならないのはどれか。",
+  "choices": [
+   "免許人の氏名を変えるとき",
+   "無線局の運用を休止するとき",
+   "無線設備の設置場所を変えるとき",
+   "無線局を廃止するとき"
+  ],
+  "answer": 3,
+  "explanation": "事前の許可が必要なのは「無線設備の設置場所の変更」と「無線設備の変更の工事」。ほかの選択肢は許可の対象ではない。",
+  "source": "日本無線協会 CBT例題（4アマ）法規No.1 問2を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_E/4ama_E_01.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-E1-03",
+  "subject": "法規",
+  "category": "無線設備",
+  "question": "アナログ信号の単一チャネルで周波数変調した電話の電波の型式はどれか。",
+  "choices": [
+   "F3E",
+   "A3E",
+   "J3E",
+   "F2D"
+  ],
+  "answer": 1,
+  "explanation": "1文字目のFが周波数変調、3がアナログ信号の単一チャネル、Eが電話。いわゆるFMの音声通信。",
+  "source": "日本無線協会 CBT例題（4アマ）法規No.1 問3を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_E/4ama_E_01.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-E1-04",
+  "subject": "法規",
+  "category": "無線従事者",
+  "question": "無線従事者が免許証をなくして再交付を受けたあと、なくした免許証が見つかった。見つけた日から何日以内に返納しなければならないか。",
+  "choices": [
+   "7日",
+   "10日",
+   "14日",
+   "1か月"
+  ],
+  "answer": 2,
+  "explanation": "見つかった古い免許証は10日以内に返納する。免許証の返納は「10日以内」と覚える。",
+  "source": "日本無線協会 CBT例題（4アマ）法規No.1 問4を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_E/4ama_E_01.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-E1-05",
+  "subject": "法規",
+  "category": "監督",
+  "question": "免許人が電波法に基づく処分に違反したとき、その無線局が総務大臣から受けることがある処分はどれか。",
+  "choices": [
+   "無線従事者の解任命令",
+   "通信の相手方の制限",
+   "電波の型式の制限",
+   "運用の停止"
+  ],
+  "answer": 4,
+  "explanation": "違反したときは、期間を定めた運用の停止や、運用時間・周波数・空中線電力の制限を受けることがある。",
+  "source": "日本無線協会 CBT例題（4アマ）法規No.1 問5を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_E/4ama_E_01.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-E1-06",
+  "subject": "法規",
+  "category": "監督",
+  "question": "無線局の免許人が非常通信を行ったとき、電波法の規定でとらなければならない措置はどれか。",
+  "choices": [
+   "中央防災会議会長に届け出る",
+   "市町村長に連絡する",
+   "都道府県知事に通知する",
+   "総務大臣に報告する"
+  ],
+  "answer": 4,
+  "explanation": "非常通信を行ったら総務大臣に報告する。報告先はいつも総務大臣。",
+  "source": "日本無線協会 CBT例題（4アマ）法規No.1 問6を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_E/4ama_E_01.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-E1-07",
+  "subject": "法規",
+  "category": "業務書類",
+  "question": "無線局の免許が効力を失ったとき、免許人だった者は、その免許に係る免許記録の写しと免許事項証明書をどうしなければならないか。",
+  "choices": [
+   "無線従事者免許証と一緒に1年間保存する",
+   "1か月以内に返納する",
+   "廃棄するか、効力がないことがすぐ分かるように措置する",
+   "3か月以内に返納する"
+  ],
+  "answer": 3,
+  "explanation": "免許記録の写しと免許事項証明書は、廃棄するか、効力がないと容易に分かるようにする。「返納」ではない点に注意。",
+  "source": "日本無線協会 CBT例題（4アマ）法規No.1 問7を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_E/4ama_E_01.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-E1-08",
+  "subject": "法規",
+  "category": "運用",
+  "question": "電波法で、無線局がなるべく擬似空中線回路を使わなければならないのはどんな場合か。",
+  "choices": [
+   "他の無線局の通信に妨害を与えるおそれがあるとき",
+   "工事設計書に書いた空中線を使えないとき",
+   "無線設備の機器の試験や調整を行うとき",
+   "物件に損傷を与えるおそれがあるとき"
+  ],
+  "answer": 3,
+  "explanation": "試験や調整のときは、電波を外に出さないように擬似空中線回路（ダミーロード）を使う。",
+  "source": "日本無線協会 CBT例題（4アマ）法規No.1 問8を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_E/4ama_E_01.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-E1-09",
+  "subject": "法規",
+  "category": "運用",
+  "question": "無線局運用規則の規定で、［　］に入る語句はどれか。「無線通信は、正確に行うものとし、通信上の誤りを知ったときは、［　］」",
+  "choices": [
+   "初めから更に送信しなければならない",
+   "通報の送信が終わったあと、訂正箇所を通知しなければならない",
+   "直ちに訂正しなければならない",
+   "適宜に通報の訂正を行わなければならない"
+  ],
+  "answer": 3,
+  "explanation": "誤りに気づいたら「直ちに訂正」。",
+  "source": "日本無線協会 CBT例題（4アマ）法規No.1 問9を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_E/4ama_E_01.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-E1-10",
+  "subject": "法規",
+  "category": "運用",
+  "question": "アマチュア局が呼出しを繰り返しても応答がないとき、呼出しを再開するまでに、できる限り少なくとも何分の間隔をあけなければならないか。",
+  "choices": [
+   "3分間",
+   "5分間",
+   "10分間",
+   "15分間"
+  ],
+  "answer": 1,
+  "explanation": "アマチュア局は少なくとも3分間あけてから呼出しを再開する。",
+  "source": "日本無線協会 CBT例題（4アマ）法規No.1 問10を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_E/4ama_E_01.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-E1-11",
+  "subject": "法規",
+  "category": "運用",
+  "question": "無線電話通信で「さようなら」を送信することになっているのはどんなときか。",
+  "choices": [
+   "無線機器の試験や調整が終わったとき",
+   "通報を確実に受信したとき",
+   "通報の送信が終わったとき",
+   "通信が終了したとき"
+  ],
+  "answer": 4,
+  "explanation": "「さようなら」は通信が終わったときに送る。",
+  "source": "日本無線協会 CBT例題（4アマ）法規No.1 問11を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_E/4ama_E_01.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-E1-12",
+  "subject": "法規",
+  "category": "運用",
+  "question": "無線機器の試験や調整のために電波を出す必要があるとき、発射する前に、発射しようとする周波数などで聴守して確かめなければならないことはどれか。",
+  "choices": [
+   "非常の場合の無線通信が行われていないこと",
+   "他の無線局の通信に混信を与えないこと",
+   "他の無線局が通信を行っていないこと",
+   "受信機が最良の状態にあること"
+  ],
+  "answer": 2,
+  "explanation": "確かめるのは「混信を与えないこと」。他局が通信していないことではない点がひっかけ。",
+  "source": "日本無線協会 CBT例題（4アマ）法規No.1 問12を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_E/4ama_E_01.pdf",
+  "answerChecked": false,
+  "readQuestion": "無線機器の試験や調整のために電波を出す必要があるとき、発射する前に、発射しようとする周波数などでちょうしゅして確かめなければならないことはどれか。"
+ },
+ {
+  "id": "R-E2-01",
+  "subject": "法規",
+  "category": "無線局の免許",
+  "question": "アマチュア局（人工衛星等のアマチュア局を除く）の再免許の申請は、免許の有効期間が満了する前の、いつからいつまでに行うか。",
+  "choices": [
+   "6か月以上1年を超えない期間",
+   "3か月以上6か月を超えない期間",
+   "2か月以上6か月を超えない期間",
+   "1か月以上6か月を超えない期間"
+  ],
+  "answer": 4,
+  "explanation": "アマチュア局の再免許申請は、満了前1か月以上6か月を超えない期間。",
+  "source": "日本無線協会 CBT例題（4アマ）法規No.2 問1を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_E/4ama_E_02.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-E2-02",
+  "subject": "法規",
+  "category": "無線局の免許",
+  "question": "アマチュア局の免許人が、総務省令で定める場合を除き、前もって総合通信局長の許可を受けなければならないのはどれか。",
+  "choices": [
+   "無線設備の変更の工事をするとき",
+   "無線局の運用を休止するとき",
+   "免許状の訂正を受けるとき",
+   "無線局を廃止するとき"
+  ],
+  "answer": 1,
+  "explanation": "事前の許可が必要なのは「無線設備の変更の工事」と「設置場所の変更」。",
+  "source": "日本無線協会 CBT例題（4アマ）法規No.2 問2を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_E/4ama_E_02.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-E2-04",
+  "subject": "法規",
+  "category": "無線従事者",
+  "question": "第四級アマチュア無線技士が操作できる無線設備は、どの周波数の電波を使うものか。",
+  "choices": [
+   "21MHz以下",
+   "21MHz以上、または8MHz以下",
+   "8MHz以上",
+   "8MHz以上21MHz以下"
+  ],
+  "answer": 2,
+  "explanation": "4アマは21MHz以上（30MHz超は20W以下、21〜30MHzは10W以下）と、8MHz以下（10W以下）を操作できる。",
+  "source": "日本無線協会 CBT例題（4アマ）法規No.2 問4を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_E/4ama_E_02.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-E2-05",
+  "subject": "法規",
+  "category": "監督",
+  "question": "無線局の免許を取り消されることがあるのはどれか。",
+  "choices": [
+   "不正な手段で無線局の免許を受けたとき",
+   "免許状に書かれた目的の範囲を超えて運用したとき",
+   "免許人が1年以上日本を離れたとき",
+   "免許人が免許人以外の者のために無線局を運用させたとき"
+  ],
+  "answer": 1,
+  "explanation": "不正な手段で免許を受けた場合は免許の取消しの対象になる。",
+  "source": "日本無線協会 CBT例題（4アマ）法規No.2 問5を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_E/4ama_E_02.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-E2-06",
+  "subject": "法規",
+  "category": "監督",
+  "question": "アマチュア局の免許人が行った通信のうち、総務大臣に報告しなければならないと電波法で決められているのはどれか。",
+  "choices": [
+   "宇宙無線通信",
+   "非常通信",
+   "無線設備の試験や調整のための通信",
+   "国際通信"
+  ],
+  "answer": 2,
+  "explanation": "非常通信を行ったら総務大臣に報告する。",
+  "source": "日本無線協会 CBT例題（4アマ）法規No.2 問6を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_E/4ama_E_02.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-E2-07",
+  "subject": "法規",
+  "category": "運用",
+  "question": "アマチュア局は、他人から頼まれた通報（非常の事態での人命救助・災害救援などに必要な通報と、人工衛星のアマチュア局が送る通報を除く）を送信できるか。",
+  "choices": [
+   "やむを得ないと判断したものはできる",
+   "内容が簡単であればできる",
+   "できる",
+   "できない"
+  ],
+  "answer": 4,
+  "explanation": "アマチュア局は、例外を除いて他人の依頼による通報は送れない。",
+  "source": "日本無線協会 CBT例題（4アマ）法規No.2 問7を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_E/4ama_E_02.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-E2-08",
+  "subject": "法規",
+  "category": "運用",
+  "question": "アマチュア局は、自局の電波がテレビやラジオの受信に支障を与えるとき、非常の場合の無線通信などを除き、どうしなければならないか。",
+  "choices": [
+   "注意しながら電波を発射する",
+   "速やかにその周波数での電波の発射を中止する",
+   "障害の状況を把握し、適切な措置をしてから電波を発射する",
+   "空中線電力を小さくする"
+  ],
+  "answer": 2,
+  "explanation": "放送の受信に支障を与えるときは、速やかにその周波数での発射を中止する。",
+  "source": "日本無線協会 CBT例題（4アマ）法規No.2 問8を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_E/4ama_E_02.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-E2-09",
+  "subject": "法規",
+  "category": "運用",
+  "question": "非常の場合の無線通信で、無線電話により連絡を設定するための応答はどう行うことになっているか。",
+  "choices": [
+   "応答事項の次に「非常」を3回送信する",
+   "応答事項の次に「非常」を1回送信する",
+   "応答事項の前に「非常」を3回つける",
+   "応答事項の前に「非常」を1回つける"
+  ],
+  "answer": 2,
+  "explanation": "呼出しは「非常」3回を前につけ、応答は応答事項の次に「非常」1回。前後と回数の違いがポイント。",
+  "source": "日本無線協会 CBT例題（4アマ）法規No.2 問9を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_E/4ama_E_02.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-E2-10",
+  "subject": "法規",
+  "category": "運用",
+  "question": "アマチュア局が無線機器の試験や調整で電波を出すとき、「本日は晴天なり」の連続と自局の呼出符号の送信は、必要があるときを除き、何秒間を超えてはならないか。",
+  "choices": [
+   "5秒間",
+   "10秒間",
+   "20秒間",
+   "30秒間"
+  ],
+  "answer": 2,
+  "explanation": "「本日は晴天なり」と呼出符号の送信は10秒間まで。",
+  "source": "日本無線協会 CBT例題（4アマ）法規No.2 問10を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_E/4ama_E_02.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-E2-11",
+  "subject": "法規",
+  "category": "運用",
+  "question": "アマチュア局の無線電話通信での応答事項として正しいものはどれか。",
+  "choices": [
+   "相手局の呼出符号3回以下、こちらは1回、自局の呼出符号3回",
+   "相手局の呼出符号3回、こちらは1回、自局の呼出符号3回",
+   "相手局の呼出符号2回、こちらは1回、自局の呼出符号2回",
+   "相手局の呼出符号3回以下、こちらは1回、自局の呼出符号1回"
+  ],
+  "answer": 4,
+  "explanation": "応答は、相手局の呼出符号3回以下、こちらは1回、自局の呼出符号1回。呼出し（自局も3回以下）との違いに注意。",
+  "source": "日本無線協会 CBT例題（4アマ）法規No.2 問11を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_E/4ama_E_02.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-E2-12",
+  "subject": "法規",
+  "category": "業務書類",
+  "question": "移動するアマチュア局（人工衛星のものを除く）の免許状は、どこに備え付けておかなければならないか。",
+  "choices": [
+   "無線設備の常置場所",
+   "受信装置のある場所",
+   "免許人の住所",
+   "送信空中線の設置場所"
+  ],
+  "answer": 1,
+  "explanation": "移動するアマチュア局の免許状は、無線設備の常置場所に備え付ける。",
+  "source": "日本無線協会 CBT例題（4アマ）法規No.2 問12を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_E/4ama_E_02.pdf",
+  "answerChecked": false,
+  "readExplanation": "移動するアマチュア局の免許状は、無線設備のじょうち場所に備え付ける。",
+  "note": "2024年2月版の例題。法規No.1・No.3では免許状に代わり「免許記録の写し・免許事項証明書」の出題になっているため、制度変更で出題されなくなった可能性あり。"
+ },
+ {
+  "id": "R-E3-01",
+  "subject": "法規",
+  "category": "無線局の免許",
+  "question": "日本の国籍を持つ人が開設するアマチュア局の免許の有効期間はどれか。",
+  "choices": [
+   "無期限",
+   "無線設備が使えなくなるまで",
+   "免許の日から数えて5年",
+   "免許の日から数えて10年"
+  ],
+  "answer": 3,
+  "explanation": "アマチュア局の免許の有効期間は、免許の日から起算して5年。",
+  "source": "日本無線協会 CBT例題（4アマ）法規No.3 問1を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_E/4ama_E_03.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-E3-03",
+  "subject": "法規",
+  "category": "無線設備",
+  "question": "アナログ信号の単一チャネルで振幅変調した、抑圧搬送波による単側波帯の電話の電波の型式はどれか。",
+  "choices": [
+   "A3E",
+   "H3E",
+   "J3E",
+   "R3E"
+  ],
+  "answer": 3,
+  "explanation": "Jが抑圧搬送波の単側波帯（いわゆるSSB）。Aは両側波帯、Hは全搬送波の単側波帯、Rは低減搬送波の単側波帯。",
+  "source": "日本無線協会 CBT例題（4アマ）法規No.3 問3を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_E/4ama_E_03.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-E3-04",
+  "subject": "法規",
+  "category": "無線従事者",
+  "question": "無線従事者免許証を返納しなければならないのはどれか。",
+  "choices": [
+   "無線設備の操作を5年以上しなかったとき",
+   "3か月間業務に従事することを停止されたとき",
+   "無線従事者が失そうの宣告を受けたとき",
+   "免許を受けた日から5年がたったとき"
+  ],
+  "answer": 3,
+  "explanation": "死亡や失そうの宣告を受けたときは、免許証を10日以内に返納する。無線従事者の免許には有効期間はない。",
+  "source": "日本無線協会 CBT例題（4アマ）法規No.3 問4を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_E/4ama_E_03.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-E3-05",
+  "subject": "法規",
+  "category": "監督",
+  "question": "電波法に基づく命令の規定に違反して運用している無線局を見つけたとき、免許人がとらなければならない措置はどれか。",
+  "choices": [
+   "その無線局の免許人を告発する",
+   "総務大臣に報告する",
+   "その無線局の電波の発射を停止させる",
+   "その無線局の免許人にその旨を通知する"
+  ],
+  "answer": 2,
+  "explanation": "違反している無線局を見つけたら総務大臣に報告する。",
+  "source": "日本無線協会 CBT例題（4アマ）法規No.3 問5を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_E/4ama_E_03.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-E3-08",
+  "subject": "法規",
+  "category": "無線設備",
+  "question": "アマチュア局の発射の制限に関する無線局運用規則の規定で、［　］に入る語句はどれか。「アマチュア局においては、その発射の占有する［　］に含まれているいかなるエネルギーの発射も、その局が動作することを許された周波数帯から逸脱してはならない。」",
+  "choices": [
+   "周波数",
+   "特性周波数",
+   "基準周波数",
+   "周波数帯幅"
+  ],
+  "answer": 4,
+  "explanation": "占有する「周波数帯幅」のエネルギーが、許された周波数帯からはみ出してはいけない。バンドの端ぎりぎりで運用するときに注意。",
+  "source": "日本無線協会 CBT例題（4アマ）法規No.3 問8を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_E/4ama_E_03.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-E3-09",
+  "subject": "法規",
+  "category": "運用",
+  "question": "アマチュア局が長時間続けて通報を送信するとき、「こちらは」と自局の呼出符号を何分ごとを標準として送信しなければならないか。",
+  "choices": [
+   "10分",
+   "20分",
+   "25分",
+   "30分"
+  ],
+  "answer": 1,
+  "explanation": "アマチュア局は10分ごとを標準に「こちらは」と自局の呼出符号を送る。",
+  "source": "日本無線協会 CBT例題（4アマ）法規No.3 問9を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_E/4ama_E_03.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-E3-10",
+  "subject": "法規",
+  "category": "運用",
+  "question": "無線電話通信で、相手局に通報の反復を求めるときはどうするか。",
+  "choices": [
+   "「反復してください」と送信する",
+   "反復してほしい箇所を2回繰り返し送信する",
+   "反復してほしい箇所の次に「反復」を送信する",
+   "「反復」の次に反復してほしい箇所を示す"
+  ],
+  "answer": 4,
+  "explanation": "「反復」と言ってから、その箇所を示す。",
+  "source": "日本無線協会 CBT例題（4アマ）法規No.3 問10を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_E/4ama_E_03.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-E3-12",
+  "subject": "法規",
+  "category": "運用",
+  "question": "非常の場合の無線通信で、無線電話により連絡を設定するための呼出しでは、呼出事項に「非常」を何回前につけるか。",
+  "choices": [
+   "1回",
+   "2回",
+   "3回",
+   "4回"
+  ],
+  "answer": 3,
+  "explanation": "呼出しは「非常」を3回前置。応答は応答事項の次に「非常」1回。",
+  "source": "日本無線協会 CBT例題（4アマ）法規No.3 問12を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_E/4ama_E_03.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-A1-13",
+  "subject": "無線工学",
+  "category": "基礎",
+  "question": "4Ωの抵抗に直流電圧を加えたら、100Wの電力が消費された。加えた電圧はいくらか。",
+  "choices": [
+   "0.2V",
+   "5V",
+   "20V",
+   "400V"
+  ],
+  "answer": 3,
+  "explanation": "電力＝電圧の2乗÷抵抗。電圧の2乗＝100×4＝400なので、電圧は20V。",
+  "source": "日本無線協会 CBT例題（4アマ）工学No.1 問13を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_A/4ama_A_01.pdf",
+  "answerChecked": false,
+  "readExplanation": "電力は電圧の2乗わる抵抗。電圧の2乗は100かける4で400なので、電圧は20ボルト。"
+ },
+ {
+  "id": "R-A1-15",
+  "subject": "無線工学",
+  "category": "送信機",
+  "question": "SSB（J3E）送信機では、［A］増幅器の入力レベルを制限して送信出力がひずまないように、［B］回路が使われる。AとBの組合せで正しいものはどれか。",
+  "choices": [
+   "A：緩衝　B：IDC",
+   "A：電力　B：IDC",
+   "A：緩衝　B：ALC",
+   "A：電力　B：ALC"
+  ],
+  "answer": 4,
+  "explanation": "SSBでは、電力増幅器への入力が大きすぎてひずまないようにALC回路を使う。IDCはFM送信機で周波数偏移を抑える回路。",
+  "source": "日本無線協会 CBT例題（4アマ）工学No.1 問15を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_A/4ama_A_01.pdf",
+  "answerChecked": false,
+  "readQuestion": "エスエスビー送信機では、Aの増幅器の入力レベルを制限して送信出力がひずまないように、Bの回路が使われる。AとBの組合せで正しいものはどれか。"
+ },
+ {
+  "id": "R-A1-16",
+  "subject": "無線工学",
+  "category": "送信機",
+  "question": "直接FM方式のFM（F3E）送信機の構成が「音声信号入力 →［A］→ 電圧制御発振器 → 緩衝増幅器 →［B］→ 低域フィルタ → アンテナ」で、電圧制御発振器は位相比較器と可変分周器を通して基準水晶発振器に合わせられている。AとBの組合せで正しいものはどれか。",
+  "choices": [
+   "A：ALC回路　B：電力増幅器",
+   "A：ALC回路　B：VOX回路",
+   "A：IDC回路　B：VOX回路",
+   "A：IDC回路　B：電力増幅器"
+  ],
+  "answer": 4,
+  "explanation": "音声で周波数を変化させる前にIDC回路で周波数偏移が広がりすぎないようにし、最後は電力増幅器で出力を大きくしてから低域フィルタを通す。",
+  "source": "日本無線協会 CBT例題（4アマ）工学No.1 問16を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_A/4ama_A_01.pdf",
+  "answerChecked": false,
+  "readQuestion": "直接FM方式の送信機の構成が、音声信号入力、A、電圧制御発振器、緩衝増幅器、B、低域フィルタ、アンテナの順になっている。AとBの組合せで正しいものはどれか。"
+ },
+ {
+  "id": "R-A1-17",
+  "subject": "無線工学",
+  "category": "受信機",
+  "question": "スーパヘテロダイン受信機で、近い周波数に対する選択度特性に最も影響するものはどれか。",
+  "choices": [
+   "中間周波増幅器",
+   "高周波増幅器",
+   "周波数変換器",
+   "定電圧回路"
+  ],
+  "answer": 1,
+  "explanation": "近接周波数の選択度は中間周波増幅器（とそのフィルタ）で決まる。",
+  "source": "日本無線協会 CBT例題（4アマ）工学No.1 問17を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_A/4ama_A_01.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-A1-18",
+  "subject": "無線工学",
+  "category": "受信機",
+  "question": "シングルスーパヘテロダイン受信機の局部発振器に求められる条件はどれか。",
+  "choices": [
+   "発振周波数が受信周波数と等しいこと",
+   "スプリアス成分が少ないこと",
+   "発振出力の振幅を変えられること",
+   "水晶発振器であること"
+  ],
+  "answer": 2,
+  "explanation": "局部発振器に不要な成分（スプリアス）が多いと、混信やスプリアス受信の原因になる。発振周波数は受信周波数と中間周波数だけずれている。",
+  "source": "日本無線協会 CBT例題（4アマ）工学No.1 問18を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_A/4ama_A_01.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-A1-19",
+  "subject": "無線工学",
+  "category": "電波障害",
+  "question": "アマチュア局が出した435MHz帯の電波（基本波）が、地デジ（470〜710MHz）のアンテナ直下型受信用ブースタに入り込んで障害を与えた。防ぐために地デジアンテナとブースタの間に入れるものはどれか。",
+  "choices": [
+   "ラインフィルタ",
+   "トラップフィルタ（BEF）",
+   "同軸避雷器",
+   "SWRメータ"
+  ],
+  "answer": 2,
+  "explanation": "特定の周波数（435MHz帯）だけを落とし、テレビの周波数は通すトラップフィルタ（帯域除去フィルタ）を受信側に入れる。",
+  "source": "日本無線協会 CBT例題（4アマ）工学No.1 問19を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_A/4ama_A_01.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-A1-20",
+  "subject": "無線工学",
+  "category": "電波障害",
+  "question": "AMラジオ受信機に、希望する電波とは別の周波数の強い妨害波が入ると、希望波が妨害波の変調信号で変調されてBCIを起こすことがある。この現象を何というか。",
+  "choices": [
+   "過変調",
+   "平衡変調",
+   "混変調",
+   "位相変調"
+  ],
+  "answer": 3,
+  "explanation": "強い妨害波の変調が希望波に乗り移る現象を混変調という。",
+  "source": "日本無線協会 CBT例題（4アマ）工学No.1 問20を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_A/4ama_A_01.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-A1-21",
+  "subject": "無線工学",
+  "category": "空中線",
+  "question": "21MHz用のブラウンアンテナ（グランドプレーンアンテナ）の放射エレメントの長さは、ほぼいくらか。",
+  "choices": [
+   "14.3m",
+   "7.2m",
+   "3.6m",
+   "1.8m"
+  ],
+  "answer": 3,
+  "explanation": "波長＝300÷21でおよそ14.3m。放射エレメントは4分の1波長なので約3.6m。",
+  "source": "日本無線協会 CBT例題（4アマ）工学No.1 問21を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_A/4ama_A_01.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-A1-24",
+  "subject": "無線工学",
+  "category": "測定",
+  "question": "ディップメータの用途として正しいものはどれか。",
+  "choices": [
+   "アンテナのSWRの測定",
+   "高周波電圧の測定",
+   "送信機の占有周波数帯幅の測定",
+   "同調回路の共振周波数の測定"
+  ],
+  "answer": 4,
+  "explanation": "ディップメータは、同調回路の共振周波数を調べる測定器。",
+  "source": "日本無線協会 CBT例題（4アマ）工学No.1 問24を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_A/4ama_A_01.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-A2-13",
+  "subject": "無線工学",
+  "category": "基礎",
+  "question": "次の記述のうち、誤っているものはどれか。",
+  "choices": [
+   "導線の抵抗が大きいほど、交流電流は流れにくくなる",
+   "コイルのインダクタンスが大きいほど、交流電流は流れにくくなる",
+   "コンデンサの静電容量が大きいほど、交流電流は流れにくくなる",
+   "導線の断面積が小さいほど、交流電流は流れにくくなる"
+  ],
+  "answer": 3,
+  "explanation": "コンデンサは静電容量が大きいほど交流を通しやすくなる（リアクタンスが小さくなる）。コイルは逆にインダクタンスが大きいほど通しにくい。",
+  "source": "日本無線協会 CBT例題（4アマ）工学No.2 問13を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_A/4ama_A_02.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-A2-14",
+  "subject": "無線工学",
+  "category": "送信機",
+  "question": "一定の振幅の搬送波を単一の正弦波で振幅変調した変調波（A3E）で、変調波の最大振幅が90V、搬送波の振幅が60Vだった。変調度はいくらか。",
+  "choices": [
+   "15.0%",
+   "30.0%",
+   "33.3%",
+   "50.0%"
+  ],
+  "answer": 4,
+  "explanation": "変調度＝（最大振幅−搬送波の振幅）÷搬送波の振幅。（90−60）÷60＝0.5で50%。",
+  "source": "日本無線協会 CBT例題（4アマ）工学No.2 問14を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_A/4ama_A_02.pdf",
+  "answerChecked": false,
+  "readExplanation": "変調度は、最大振幅から搬送波の振幅を引いて、搬送波の振幅でわったもの。90ひく60は30、30わる60で、50パーセント。",
+  "note": "元の問題は波形の図から読み取る形式。数値を文章にしてある。"
+ },
+ {
+  "id": "R-A2-16",
+  "subject": "無線工学",
+  "category": "送信機",
+  "question": "FM（F3E）送信機では、音声信号で搬送波をどう変化させるか。",
+  "choices": [
+   "搬送波の発射を断続させる",
+   "振幅を変化させる",
+   "周波数を変化させる",
+   "振幅と周波数をどちらも変化させる"
+  ],
+  "answer": 3,
+  "explanation": "FMは周波数変調なので、音声に合わせて周波数を変える。振幅は一定。",
+  "source": "日本無線協会 CBT例題（4アマ）工学No.2 問16を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_A/4ama_A_02.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-A2-17",
+  "subject": "無線工学",
+  "category": "受信機",
+  "question": "シングルスーパヘテロダイン受信機で、［A］を設けると周波数変換部で出る雑音の影響が少なくなるので、［B］が良くなる。AとBの組合せで正しいものはどれか。",
+  "choices": [
+   "A：高周波増幅部　B：信号対雑音比",
+   "A：高周波増幅部　B：安定度",
+   "A：低周波増幅部　B：信号対雑音比",
+   "A：低周波増幅部　B：安定度"
+  ],
+  "answer": 1,
+  "explanation": "周波数変換の前に高周波増幅で信号を大きくしておくと、変換部の雑音が相対的に小さくなり、信号対雑音比が良くなる。",
+  "source": "日本無線協会 CBT例題（4アマ）工学No.2 問17を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_A/4ama_A_02.pdf",
+  "answerChecked": false,
+  "readQuestion": "シングルスーパヘテロダイン受信機で、Aを設けると周波数変換部で出る雑音の影響が少なくなるので、Bが良くなる。AとBの組合せで正しいものはどれか。"
+ },
+ {
+  "id": "R-A2-18",
+  "subject": "無線工学",
+  "category": "受信機",
+  "question": "FM（F3E）受信機の周波数弁別器の働きはどれか。",
+  "choices": [
+   "近い周波数による混信を取り除く",
+   "受信電波がなくなったときに出る大きな雑音を消す",
+   "受信電波の振幅を一定にして、振幅の変化を取り除く",
+   "受信電波の周波数の変化を振幅の変化に変えて、信号を取り出す"
+  ],
+  "answer": 4,
+  "explanation": "周波数弁別器はFMの検波器。2はスケルチ、3はリミッタの説明。",
+  "source": "日本無線協会 CBT例題（4アマ）工学No.2 問18を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_A/4ama_A_02.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-A2-19",
+  "subject": "無線工学",
+  "category": "電波障害",
+  "question": "28MHzの電波を送信したら、FM放送の受信に混信を与えた。送信側で考えられる原因として正しいものはどれか。",
+  "choices": [
+   "低調波が発射されている",
+   "同軸給電線が断線している",
+   "スケルチを強くかけすぎている",
+   "第3高調波が強く発射されている"
+  ],
+  "answer": 4,
+  "explanation": "28MHzの3倍は84MHzで、FM放送の周波数帯に入る。第3高調波が原因。",
+  "source": "日本無線協会 CBT例題（4アマ）工学No.2 問19を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_A/4ama_A_02.pdf",
+  "answerChecked": false,
+  "note": "元の選択肢1は分数を含む表現。PDFで確認のこと。"
+ },
+ {
+  "id": "R-A2-20",
+  "subject": "無線工学",
+  "category": "電波伝搬",
+  "question": "夏の昼間に50MHz帯で交信していたら、数百km離れた場所の同じ周波数帯の受信機に強い混信を与えた。考えられる原因はどれか。",
+  "choices": [
+   "空電による混信",
+   "スポラジックE層による伝搬",
+   "地表波による伝搬",
+   "高調波の放射による混信"
+  ],
+  "answer": 2,
+  "explanation": "夏の昼間に突然現れるスポラジックE層が50MHz帯などの電波を反射し、遠くまで届くことがある。",
+  "source": "日本無線協会 CBT例題（4アマ）工学No.2 問20を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_A/4ama_A_02.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-A2-21",
+  "subject": "無線工学",
+  "category": "空中線",
+  "question": "半波長ダイポールアンテナの給電点インピーダンスは、ほぼいくらか。",
+  "choices": [
+   "36Ω",
+   "75Ω",
+   "150Ω",
+   "300Ω"
+  ],
+  "answer": 2,
+  "explanation": "半波長ダイポールの給電点インピーダンスは約73〜75Ω。4分の1波長垂直接地アンテナは約36Ω。",
+  "source": "日本無線協会 CBT例題（4アマ）工学No.2 問21を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_A/4ama_A_02.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-A2-23",
+  "subject": "無線工学",
+  "category": "電子回路",
+  "question": "シリコン接合ダイオードに加える［A］を少しずつ大きくすると、ある電圧で急に大きな電流が流れるようになる。この性質を利用するダイオードを［B］という。AとBの組合せで正しいものはどれか。",
+  "choices": [
+   "A：逆方向電圧　B：バラクタダイオード",
+   "A：順方向電圧　B：定電圧ダイオード",
+   "A：逆方向電圧　B：定電圧ダイオード",
+   "A：順方向電圧　B：バラクタダイオード"
+  ],
+  "answer": 3,
+  "explanation": "逆方向電圧で急に電流が流れる降伏現象を利用するのが定電圧ダイオード（ツェナーダイオード）。バラクタダイオードは静電容量が変わる性質を利用する。",
+  "source": "日本無線協会 CBT例題（4アマ）工学No.2 問23を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_A/4ama_A_02.pdf",
+  "answerChecked": false,
+  "readQuestion": "シリコン接合ダイオードに加えるAを少しずつ大きくすると、ある電圧で急に大きな電流が流れるようになる。この性質を利用するダイオードをBという。AとBの組合せで正しいものはどれか。"
+ },
+ {
+  "id": "R-A2-24",
+  "subject": "無線工学",
+  "category": "測定",
+  "question": "SWRメータで測定できるものはどれか。",
+  "choices": [
+   "周波数",
+   "電気抵抗",
+   "定在波比",
+   "変調度"
+  ],
+  "answer": 3,
+  "explanation": "SWRは定在波比のこと。アンテナと給電線の整合具合を調べるのに使う。",
+  "source": "日本無線協会 CBT例題（4アマ）工学No.2 問24を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_A/4ama_A_02.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-A3-13",
+  "subject": "無線工学",
+  "category": "基礎",
+  "question": "抵抗R、コイルL、コンデンサCを並列につないだ並列共振回路で、回路のインピーダンスをZ、回路に流れる電流をiとする。共振したとき、Zとiはどうなるか。",
+  "choices": [
+   "Z：最大　i：最大",
+   "Z：最大　i：最小",
+   "Z：最小　i：最小",
+   "Z：最小　i：最大"
+  ],
+  "answer": 2,
+  "explanation": "並列共振ではインピーダンスが最大になり、電流は最小になる。直列共振はその逆。",
+  "source": "日本無線協会 CBT例題（4アマ）工学No.3 問13を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_A/4ama_A_03.pdf",
+  "answerChecked": false,
+  "readQuestion": "抵抗、コイル、コンデンサを並列につないだ並列共振回路で、回路のインピーダンスをゼット、回路に流れる電流をアイとする。共振したとき、ゼットとアイはどうなるか。",
+  "readExplanation": "並列共振ではインピーダンスが最大になり、電流は最小になる。直列共振はその逆。"
+ },
+ {
+  "id": "R-A3-14",
+  "subject": "無線工学",
+  "category": "電子回路",
+  "question": "変調された信号の中から音声信号を取り出す回路はどれか。",
+  "choices": [
+   "検波回路",
+   "増幅回路",
+   "変調回路",
+   "発振回路"
+  ],
+  "answer": 1,
+  "explanation": "変調された電波から元の信号を取り出すのが検波（復調）。",
+  "source": "日本無線協会 CBT例題（4アマ）工学No.3 問14を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_A/4ama_A_03.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-A3-15",
+  "subject": "無線工学",
+  "category": "送信機",
+  "question": "SSB（J3E）波を作る回路で、1,506.5kHzの搬送波と1.5kHzの信号波を平衡変調器に入れ、上側波帯を通す帯域フィルタを通した。出力に現れる周波数はどれか。",
+  "choices": [
+   "1,503.5kHz",
+   "1,505.0kHz",
+   "1,508.0kHz",
+   "1,509.5kHz"
+  ],
+  "answer": 3,
+  "explanation": "平衡変調器の出力は搬送波±信号波。上側波帯は1,506.5＋1.5＝1,508.0kHz。",
+  "source": "日本無線協会 CBT例題（4アマ）工学No.3 問15を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_A/4ama_A_03.pdf",
+  "answerChecked": false,
+  "note": "元の問題は回路図つき。数値を文章にしてある。"
+ },
+ {
+  "id": "R-A3-16",
+  "subject": "無線工学",
+  "category": "送信機",
+  "question": "SSB（J3E）トランシーバの送信部で、送話の音声があるかないかで自動的に送信と受信を切り替える働きをするのはどれか。",
+  "choices": [
+   "ALC回路",
+   "VOX回路",
+   "帯域フィルタ（BPF）",
+   "平衡変調器"
+  ],
+  "answer": 2,
+  "explanation": "VOXは声を出すと自動で送信に切り替わる回路。",
+  "source": "日本無線協会 CBT例題（4アマ）工学No.3 問16を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_A/4ama_A_03.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-A3-17",
+  "subject": "無線工学",
+  "category": "受信機",
+  "question": "SSB（J3E）受信機にクラリファイヤ（またはRIT）を設ける目的はどれか。",
+  "choices": [
+   "受信信号の明りょう度を良くする",
+   "受信の強さの変動を防ぐ",
+   "受信周波数の目盛を校正する",
+   "受信雑音を減らす"
+  ],
+  "answer": 1,
+  "explanation": "SSBは周波数が少しずれると声が不自然になるので、受信周波数を微調整して聞き取りやすくする。",
+  "source": "日本無線協会 CBT例題（4アマ）工学No.3 問17を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_A/4ama_A_03.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-A3-18",
+  "subject": "無線工学",
+  "category": "受信機",
+  "question": "FM（F3E）受信機のスケルチ回路の説明で正しいものはどれか。",
+  "choices": [
+   "受信電波がないときに出る大きな雑音を消す回路",
+   "受信電波の振幅を一定にして、振幅の変化を取り除く回路",
+   "受信電波の周波数の変化を振幅の変化に変えて、信号を取り出す回路",
+   "近い周波数による混信を取り除く回路"
+  ],
+  "answer": 1,
+  "explanation": "スケルチは無信号時の「ザー」という雑音を消す。2はリミッタ、3は周波数弁別器。",
+  "source": "日本無線協会 CBT例題（4アマ）工学No.3 問18を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_A/4ama_A_03.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-A3-19",
+  "subject": "無線工学",
+  "category": "測定",
+  "question": "無線送信機に擬似負荷を使う目的として正しいものはどれか。",
+  "choices": [
+   "送信周波数を安定させるため",
+   "調整中に電波を外に出さないため",
+   "送信機の消費電力を節約するため",
+   "寄生振動を防ぐため"
+  ],
+  "answer": 2,
+  "explanation": "擬似負荷（ダミーロード）はアンテナの代わりにつなぎ、調整中に電波を外に出さないようにする。",
+  "source": "日本無線協会 CBT例題（4アマ）工学No.3 問19を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_A/4ama_A_03.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-A3-20",
+  "subject": "無線工学",
+  "category": "電波障害",
+  "question": "送信機で出る高調波がアンテナから発射されないように、送信機のアンテナ端子と給電線の間に入れるものはどれか。",
+  "choices": [
+   "ラインフィルタ",
+   "高域フィルタ（HPF）",
+   "同軸避雷器",
+   "低域フィルタ（LPF）"
+  ],
+  "answer": 4,
+  "explanation": "高調波は送信周波数より高いので、低い周波数だけを通す低域フィルタ（LPF）で取り除く。",
+  "source": "日本無線協会 CBT例題（4アマ）工学No.3 問20を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_A/4ama_A_03.pdf",
+  "answerChecked": false
+ },
+ {
+  "id": "R-A3-22",
+  "subject": "無線工学",
+  "category": "電波伝搬",
+  "question": "スポラジックE層は［A］の昼間に多く発生し、［B］帯の電波を反射することがある。AとBの組合せで正しいものはどれか。",
+  "choices": [
+   "A：夏季　B：SHF",
+   "A：夏季　B：VHF",
+   "A：冬季　B：VHF",
+   "A：冬季　B：SHF"
+  ],
+  "answer": 2,
+  "explanation": "スポラジックE層は夏の昼間に多く、ふだんは突き抜けるVHF帯（50MHz帯など）も反射する。",
+  "source": "日本無線協会 CBT例題（4アマ）工学No.3 問22を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_A/4ama_A_03.pdf",
+  "answerChecked": false,
+  "readQuestion": "スポラジックE層は、Aの昼間に多く発生し、Bの帯の電波を反射することがある。AとBの組合せで正しいものはどれか。"
+ },
+ {
+  "id": "R-A3-23",
+  "subject": "無線工学",
+  "category": "電源",
+  "question": "リチウムイオン蓄電池は小型軽量で、電池1個あたりの端子電圧は1.2Vより［A］。自己放電がニッケルカドミウム蓄電池より少なく、メモリー効果がないので継ぎ足し充電が［B］。破損や変形による発熱・発火の危険性が［C］。組合せで正しいものはどれか。",
+  "choices": [
+   "A：低い　B：できない　C：ある",
+   "A：低い　B：できる　C：ない",
+   "A：高い　B：できない　C：ない",
+   "A：高い　B：できる　C：ある"
+  ],
+  "answer": 4,
+  "explanation": "リチウムイオン電池は1個あたり約3.6〜3.7Vと高く、継ぎ足し充電ができる。ただし破損・変形で発熱・発火の危険がある。ドローンのバッテリーと同じ注意点。",
+  "source": "日本無線協会 CBT例題（4アマ）工学No.3 問23を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_A/4ama_A_03.pdf",
+  "answerChecked": false,
+  "readQuestion": "リチウムイオン蓄電池は小型軽量で、電池1個あたりの端子電圧は1.2ボルトよりA。自己放電がニッケルカドミウム蓄電池より少なく、メモリー効果がないので継ぎ足し充電がB。破損や変形による発熱・発火の危険性がC。組合せで正しいものはどれか。"
+ },
+ {
+  "id": "R-A3-24",
+  "subject": "無線工学",
+  "category": "測定",
+  "question": "電流計に、その電流計の内部抵抗の4分の1の値の分流器を並列につなぐと、測定範囲は元の何倍になるか。",
+  "choices": [
+   "2倍",
+   "4倍",
+   "5倍",
+   "6倍"
+  ],
+  "answer": 3,
+  "explanation": "分流器には電流計の4倍の電流が流れるので、全体では1＋4＝5倍まで測れる。倍率＝1＋内部抵抗÷分流器の抵抗。",
+  "source": "日本無線協会 CBT例題（4アマ）工学No.3 問24を元に言い換え",
+  "sourceUrl": "https://www.nichimu.or.jp/vc-files/kshiken/cbt/KoukaiReidai/4ama_A/4ama_A_03.pdf",
+  "answerChecked": false,
+  "note": "元の問題は回路図つき。"
+ }
+]

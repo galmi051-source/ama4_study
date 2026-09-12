@@ -1,0 +1,28 @@
+name: ama4_study
+description: 第四級アマチュア無線技士 試験対策（個人用・音声読み上げ付き）
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_tts: ^4.0.2
+  audioplayers: ^6.1.0
+  shared_preferences: ^2.2.3
+  wakelock_plus: ^1.2.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/questions/
+    - assets/voice/        # tools/make_voice.py が VOICEVOX 音声をここに作る
+    # 図のある問題を追加するときは下の行を有効にして assets/images/ を作成
+    # - assets/images/
