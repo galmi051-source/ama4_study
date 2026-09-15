@@ -4,7 +4,7 @@
 
     python tools/make_lecture.py 電源            # 1分野。ボイスの一覧が出るので番号を入力
     python tools/make_lecture.py all             # 全部まとめて。ボイスは 1 回選べば全分野に使われる
-    python tools/make_lecture.py all --each      # 分野ごとに別のボイスを選ぶ
+    python tools/make_lecture.py all --each      # 分野ごとに別のボイスを選ぶ（最初に全部聞かれ、あとは放置）
     python tools/make_lecture.py 電源 --speaker 8 --speed 0.8   # 一覧を出さずにすぐ作る
     python tools/make_lecture.py --speakers      # ボイスの番号一覧だけ表示
     python tools/make_lecture.py 電源 --engine sapi   # VOICEVOX 無しで Windows の音声で試作
@@ -344,6 +344,8 @@ def main():
         speed0 = a.speed if a.speed is not None else float(voices.get("speed", SPEED))
         common = choose_speaker("、".join(names), voices.get("default", mv.SPEAKER), speed0)
         save_voice("default", common)
+    # 先に全分野のボイスを決めてから（--each のときは分野ごとに聞く）、あとは放置で全部作る
+    plan = []
     for n in names:
         script = load_script(n)
         speed = a.speed if a.speed is not None else float(script.get("speed", voices.get("speed", SPEED)))
@@ -356,8 +358,19 @@ def main():
             speaker = default
         if a.engine == "voicevox" and speaker != voices.get(n):
             save_voice(n, speaker)
+        plan.append((script, speaker, speed))
+    if len(plan) > 1:
+        print("
+作る動画:")
+        for script, speaker, speed in plan:
+            print(f"  {script['category']}　話者 {speaker}　速さ {speed}")
+        print("ここからは自動で進みます（終わるまで放置で OK）
+")
+    for script, speaker, speed in plan:
         print(f"== {script['subject']}｜{script['title']}（話者 {speaker}, 速さ {speed}, {a.engine}）")
         build(script, a.engine, speaker, speed, edge, a.audio_only)
+    print(f"
+全部できました → {OUT_DIR}")
 
 
 if __name__ == "__main__":
