@@ -360,17 +360,14 @@ def main():
             save_voice(n, speaker)
         plan.append((script, speaker, speed))
     if len(plan) > 1:
-        print("
-作る動画:")
+        print("\n作る動画:")
         for script, speaker, speed in plan:
             print(f"  {script['category']}　話者 {speaker}　速さ {speed}")
-        print("ここからは自動で進みます（終わるまで放置で OK）
-")
+        print("ここからは自動で進みます（終わるまで放置で OK）\n")
     for script, speaker, speed in plan:
         print(f"== {script['subject']}｜{script['title']}（話者 {speaker}, 速さ {speed}, {a.engine}）")
         build(script, a.engine, speaker, speed, edge, a.audio_only)
-    print(f"
-全部できました → {OUT_DIR}")
+    print(f"\n全部できました → {OUT_DIR}")
 
 
 if __name__ == "__main__":
