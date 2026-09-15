@@ -23,6 +23,7 @@ ThemeData buildTheme() {
   );
   return ThemeData(
     useMaterial3: true,
+    fontFamily: 'NotoSansJP',
     colorScheme: scheme,
     scaffoldBackgroundColor: AppColors.paper,
     appBarTheme: const AppBarTheme(

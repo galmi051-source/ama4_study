@@ -9,7 +9,14 @@ import '../widgets/question_widgets.dart';
 class QuizScreen extends StatefulWidget {
   final List<Question> questions;
   final String title;
-  const QuizScreen({super.key, required this.questions, required this.title});
+
+  /// 「分野を選んで解く」から開いたときは、どこまでやったかを記録する
+  final bool trackRange;
+  const QuizScreen(
+      {super.key,
+      required this.questions,
+      required this.title,
+      this.trackRange = false});
 
   @override
   State<QuizScreen> createState() => _QuizScreenState();
@@ -56,6 +63,9 @@ class _QuizScreenState extends State<QuizScreen> {
       }
     });
     app.record(current, ok);
+    if (widget.trackRange) {
+      app.markRange(widget.title, index + 1, widget.questions.length);
+    }
     if (app.store.autoRead) {
       app.tts.speakAll([
         ok ? TtsService.correctVoice : TtsService.wrongVoice,

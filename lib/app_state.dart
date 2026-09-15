@@ -52,13 +52,22 @@ class AppState extends ChangeNotifier {
     return list;
   }
 
+  /// まだ解いていない問題を先に、解いたことのある問題を後に（それぞれシャッフル）。
+  /// 途中でやめても、次に開いたときに続きから未学習の問題が出る。
   List<Question> subjectSet(String subject, {String? category}) {
     final list = repo
         .bySubject(subject)
         .where((q) => category == null || q.category == category)
         .toList();
-    list.shuffle();
-    return list;
+    final fresh = list.where((q) => store.stat(q.id).isNew).toList()..shuffle();
+    final seen = list.where((q) => !store.stat(q.id).isNew).toList()..shuffle();
+    return [...fresh, ...seen];
+  }
+
+  /// 「分野を選んで解く」の進み具合を記録（ホームと範囲選択に表示）
+  void markRange(String label, int done, int total) {
+    store.setLastRange(label, done, total);
+    notifyListeners();
   }
 
   /// 12問出題されたら何割取れそうか（0〜1）。未学習は4択の当てずっぽう＝0.25。

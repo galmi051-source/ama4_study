@@ -4,7 +4,7 @@
  *   ama4-app-<VERSION> … アプリ本体（index.html / main.dart.js / CanvasKit / 問題 JSON など）
  *                        インストール時にまとめて取得し、以後はキャッシュ優先。
  *                        新しい版が公開されると VERSION が変わり、古いものは消す。
- *   ama4-media         … VOICEVOX 音声（約450ファイル・35MB）。
+ *   ama4-media         … VOICEVOX 音声（約450ファイル・35MB）と日本語フォント（7.6MB）。
  *                        初回に全部は取らず、再生したものから順に貯める（キャッシュ優先）。
  *                        アプリの版が上がっても消さない。設定の「まとめてダウンロード」で
  *                        全部取り込める。
@@ -45,15 +45,24 @@ const APP_SHELL = [
   'canvaskit/chromium/canvaskit.wasm',
 ];
 
+// 大きくて滅多に変わらないもの（版が上がっても消さない）
+const MEDIA_SHELL = [
+  'assets/fonts/NotoSansJP-Regular.otf',
+  'assets/fonts/NotoSansJP-Bold.otf',
+];
+
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(APP_CACHE).then(async (cache) => {
-      // 1 つ失敗しても全体を失敗させない（存在しないファイル対策）
-      await Promise.all(APP_SHELL.map((u) =>
-        cache.add(new Request(u, { cache: 'reload' })).catch((e) => console.warn('precache skip', u, e))));
-      await self.skipWaiting();
-    })
-  );
+  event.waitUntil((async () => {
+    const app = await caches.open(APP_CACHE);
+    // 1 つ失敗しても全体を失敗させない（存在しないファイル対策）
+    await Promise.all(APP_SHELL.map((u) =>
+      app.add(new Request(u, { cache: 'reload' })).catch((e) => console.warn('precache skip', u, e))));
+    const media = await caches.open(MEDIA_CACHE);
+    await Promise.all(MEDIA_SHELL.map(async (u) => {
+      if (!(await media.match(u))) await media.add(u).catch((e) => console.warn('precache skip', u, e));
+    }));
+    await self.skipWaiting();
+  })());
 });
 
 self.addEventListener('activate', (event) => {
@@ -66,15 +75,21 @@ self.addEventListener('activate', (event) => {
   })());
 });
 
-const isVoice = (url) => url.pathname.includes('/assets/assets/voice/');
+const isMedia = (url) =>
+  url.pathname.includes('/assets/assets/voice/') ||
+  url.pathname.includes('/assets/fonts/NotoSansJP');
 
 self.addEventListener('fetch', (event) => {
   const req = event.request;
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
-  if (url.origin !== self.location.origin) return;
+  if (url.origin !== self.location.origin) {
+    // Flutter が同梱フォントに無い字のために取りに行く Google Fonts も残しておく
+    if (url.hostname.endsWith('gstatic.com')) event.respondWith(cacheFirst(MEDIA_CACHE, req));
+    return;
+  }
 
-  if (isVoice(url)) {
+  if (isMedia(url)) {
     event.respondWith(cacheFirst(MEDIA_CACHE, req));
     return;
   }

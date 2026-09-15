@@ -82,6 +82,11 @@ class ProgressStore {
   int thinkSec = 4;
   bool autoRead = true;
 
+  /// 「分野を選んで解く」で最後に解いた範囲と進み具合（どこまでやったか表示用）
+  String? lastRange;
+  int lastRangeDone = 0;
+  int lastRangeTotal = 0;
+
   Future<void> load() async {
     _prefs = await SharedPreferences.getInstance();
 
@@ -99,6 +104,9 @@ class ProgressStore {
       rate = (m['rate'] as num?)?.toDouble() ?? rate;
       thinkSec = (m['thinkSec'] as num?)?.toInt() ?? thinkSec;
       autoRead = (m['autoRead'] as bool?) ?? autoRead;
+      lastRange = m['lastRange'] as String?;
+      lastRangeDone = (m['lastRangeDone'] as num?)?.toInt() ?? 0;
+      lastRangeTotal = (m['lastRangeTotal'] as num?)?.toInt() ?? 0;
     }
 
     final e = _prefs.getString(_kExams);
@@ -128,9 +136,28 @@ class ProgressStore {
   }
 
   void saveSettings() {
-    _prefs.setString(_kSettings,
-        jsonEncode({'rate': rate, 'thinkSec': thinkSec, 'autoRead': autoRead}));
+    _prefs.setString(
+        _kSettings,
+        jsonEncode({
+          'rate': rate,
+          'thinkSec': thinkSec,
+          'autoRead': autoRead,
+          'lastRange': lastRange,
+          'lastRangeDone': lastRangeDone,
+          'lastRangeTotal': lastRangeTotal,
+        }));
   }
+
+  void setLastRange(String label, int done, int total) {
+    lastRange = label;
+    lastRangeDone = done;
+    lastRangeTotal = total;
+    saveSettings();
+  }
+
+  /// 一度でも解いたことのある問題の数
+  int doneCount(Iterable<String> ids) =>
+      ids.where((id) => !stat(id).isNew).length;
 
   void addExam(ExamResult r) {
     exams.add(r);
@@ -140,6 +167,10 @@ class ProgressStore {
   void reset() {
     _stats.clear();
     exams.clear();
+    lastRange = null;
+    lastRangeDone = 0;
+    lastRangeTotal = 0;
+    saveSettings();
     _prefs.remove(_kProgress);
     _prefs.remove(_kExams);
   }

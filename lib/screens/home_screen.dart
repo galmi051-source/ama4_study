@@ -73,7 +73,9 @@ class HomeScreen extends StatelessWidget {
           _ActionTile(
             icon: Icons.list_alt_rounded,
             title: '分野を選んで解く',
-            subtitle: '法規・無線工学の分野ごと',
+            subtitle: app.store.lastRange == null
+                ? '法規・無線工学の分野ごと'
+                : '前回：${app.store.lastRange}　${app.store.lastRangeDone}/${app.store.lastRangeTotal}問まで',
             onTap: () => showRangeSheet(context, listen: false),
           ),
           _ActionTile(
@@ -227,7 +229,20 @@ void showRangeSheet(BuildContext context, {required bool listen}) {
           for (final (label, qs) in entries)
             ListTile(
               enabled: qs.isNotEmpty,
+              selected: !listen && label == app.store.lastRange,
+              selectedTileColor: const Color(0xFFFFF6E5),
               title: Text(label),
+              // 分野別：解いたことのある問題数と、前回どこまで進んだか
+              subtitle: listen || qs.isEmpty
+                  ? null
+                  : Text(
+                      '解いた ${app.store.doneCount(qs.map((q) => q.id))}/${qs.length}問'
+                      '${label == app.store.lastRange ? '　← 前回ここまで（${app.store.lastRangeDone}/${app.store.lastRangeTotal}問目）' : ''}',
+                      style: TextStyle(
+                          fontSize: 12,
+                          color: label == app.store.lastRange
+                              ? AppColors.ink
+                              : AppColors.muted)),
               trailing: Text('${qs.length}問',
                   style: const TextStyle(color: AppColors.muted)),
               onTap: () {
@@ -236,7 +251,8 @@ void showRangeSheet(BuildContext context, {required bool listen}) {
                   context,
                   listen
                       ? ListenScreen(questions: qs, title: label)
-                      : QuizScreen(questions: qs, title: label),
+                      : QuizScreen(
+                          questions: qs, title: label, trackRange: true),
                 );
               },
             ),
