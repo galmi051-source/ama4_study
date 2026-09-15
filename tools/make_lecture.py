@@ -46,6 +46,10 @@ import argparse
 import hashlib
 import html
 import json
+import re
+import time
+import traceback
+import wave
 import shutil
 import subprocess
 import sys
@@ -194,19 +198,56 @@ def voicevox_wav(text, speaker, speed):
     return mv.api("POST", "/synthesis", {"speaker": speaker}, q, timeout=mv.SYNTH_TIMEOUT)
 
 
-def make_audio(text, speaker, speed, engine, read):
-    """読み上げ音声を作って wav のパスを返す（キャッシュあり）"""
-    CACHE_DIR.mkdir(exist_ok=True)
-    spoken = read(text)
+def synth_one(spoken, speaker, speed, engine):
+    """1 文を音声にして wav のパスを返す（キャッシュあり）。VOICEVOX が固まったら 3 回まで待って再試行"""
     key = hashlib.md5(f"{engine}|{speaker}|{speed}|{spoken}".encode("utf-8")).hexdigest()
     wav = CACHE_DIR / f"{key}.wav"
     if wav.exists():
         return wav
     if engine == "sapi":
         sapi_wav(spoken, wav, speed)
-    else:
-        wav.write_bytes(voicevox_wav(spoken, speaker, speed))
-    return wav
+        return wav
+    for attempt in range(3):
+        try:
+            data = voicevox_wav(spoken, speaker, speed)
+            wav.write_bytes(data)
+            return wav
+        except Exception as e:
+            if attempt == 2:
+                raise
+            print(f"\n    VOICEVOX が応答しません（{e}）。10 秒待って再試行 {attempt + 2}/3 …", end="", flush=True)
+            time.sleep(10)
+
+
+def sentences(text):
+    """「。」「？」「！」で区切る。VOICEVOX に長文を一度に渡すと時間がかかる／失敗するため"""
+    parts = [t.strip() for t in re.split(r"(?<=[。？！?!])", text)]
+    return [t for t in parts if t]
+
+
+def concat_wavs(paths, out):
+    with wave.open(str(paths[0]), "rb") as w0:
+        params = w0.getparams()
+    with wave.open(str(out), "wb") as wo:
+        wo.setparams(params)
+        for pth in paths:
+            with wave.open(str(pth), "rb") as w:
+                wo.writeframes(w.readframes(w.getnframes()))
+
+
+def make_audio(text, speaker, speed, engine, read):
+    """ナレーション全体の wav を作る。文ごとに音声にしてつなぐ（文単位でキャッシュされる）"""
+    CACHE_DIR.mkdir(exist_ok=True)
+    spoken = read(text)
+    parts = sentences(spoken) or [spoken]
+    wavs = [synth_one(t, speaker, speed, engine) for t in parts]
+    if len(wavs) == 1:
+        return wavs[0]
+    key = hashlib.md5(("join|" + "|".join(w.name for w in wavs)).encode("utf-8")).hexdigest()
+    out = CACHE_DIR / f"{key}.wav"
+    if not out.exists():
+        concat_wavs(wavs, out)
+    return out
 
 
 # ---------- ボイス選択 ----------
@@ -364,9 +405,24 @@ def main():
         for script, speaker, speed in plan:
             print(f"  {script['category']}　話者 {speaker}　速さ {speed}")
         print("ここからは自動で進みます（終わるまで放置で OK）\n")
+    # 1 つ失敗しても止めずに次へ進み、最後にまとめて知らせる
+    failed = []
+    log = OUT_DIR / "make_lecture.log"
+    OUT_DIR.mkdir(exist_ok=True)
     for script, speaker, speed in plan:
         print(f"== {script['subject']}｜{script['title']}（話者 {speaker}, 速さ {speed}, {a.engine}）")
-        build(script, a.engine, speaker, speed, edge, a.audio_only)
+        try:
+            build(script, a.engine, speaker, speed, edge, a.audio_only)
+        except Exception as e:
+            print(f"\n  !! {script['category']} は失敗しました: {e}")
+            failed.append(script["category"])
+            with log.open("a", encoding="utf-8") as f:
+                f.write(f"--- {time.strftime('%Y-%m-%d %H:%M:%S')} {script['category']}\n")
+                f.write(traceback.format_exc() + NL)
+    if failed:
+        print(f"\n失敗した分野: {'、'.join(failed)}（詳細は {log}）")
+        print("VOICEVOX を起動し直して、同じコマンドをもう一度実行してください（できた分は再利用されます）")
+        sys.exit(1)
     print(f"\n全部できました → {OUT_DIR}")
 
 
