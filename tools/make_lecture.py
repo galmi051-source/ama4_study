@@ -170,9 +170,14 @@ def slide_html(script, i, slide, total):
 
 
 def render_png(edge, html_path, png_path):
-    subprocess.run([edge, "--headless=new", "--disable-gpu", "--hide-scrollbars", "--no-first-run",
-                    f"--window-size={W},{H}", f"--screenshot={png_path}", html_path.as_uri()],
-                   check=True, capture_output=True, timeout=120)
+    # 専用のプロファイルを使う（普段の Edge が開いていても衝突しないように）
+    profile = Path(tempfile.gettempdir()) / "ama4_lecture_edge_profile"
+    r = subprocess.run([edge, "--headless=new", "--disable-gpu", "--hide-scrollbars", "--no-first-run",
+                        f"--user-data-dir={profile}", f"--window-size={W},{H}",
+                        f"--screenshot={png_path}", html_path.as_uri()],
+                       capture_output=True, text=True, timeout=120)
+    if not Path(png_path).exists():
+        raise RuntimeError(f"Edge でスライドを画像にできませんでした（exit {r.returncode}）: {r.stderr.strip()[-300:]}")
 
 
 # ---------- 音声 ----------
@@ -418,7 +423,8 @@ def main():
             failed.append(script["category"])
             with log.open("a", encoding="utf-8") as f:
                 f.write(f"--- {time.strftime('%Y-%m-%d %H:%M:%S')} {script['category']}\n")
-                f.write(traceback.format_exc() + NL)
+                f.write(traceback.format_exc() + chr(10))
+            traceback.print_exc()
     if failed:
         print(f"\n失敗した分野: {'、'.join(failed)}（詳細は {log}）")
         print("VOICEVOX を起動し直して、同じコマンドをもう一度実行してください（できた分は再利用されます）")
