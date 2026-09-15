@@ -3,7 +3,8 @@
 分野ごとの「講義動画」（スライド＋読み上げ）を作る。
 
     python tools/make_lecture.py 電源            # 1分野。ボイスの一覧が出るので番号を入力
-    python tools/make_lecture.py all             # tools/lecture/*.json 全部
+    python tools/make_lecture.py all             # 全部まとめて。ボイスは 1 回選べば全分野に使われる
+    python tools/make_lecture.py all --each      # 分野ごとに別のボイスを選ぶ
     python tools/make_lecture.py 電源 --speaker 8 --speed 0.8   # 一覧を出さずにすぐ作る
     python tools/make_lecture.py --speakers      # ボイスの番号一覧だけ表示
     python tools/make_lecture.py 電源 --engine sapi   # VOICEVOX 無しで Windows の音声で試作
@@ -318,6 +319,7 @@ def main():
     ap.add_argument("--speaker", type=int, help="話者番号（一覧を出さずにこの番号で作る）")
     ap.add_argument("--speakers", action="store_true", help="ボイスの番号一覧を表示して終了")
     ap.add_argument("--speed", type=float, help=f"話す速さ（1.0 が標準。既定 {SPEED}）")
+    ap.add_argument("--each", action="store_true", help="複数の分野を作るとき、分野ごとにボイスを選ぶ")
     ap.add_argument("--audio-only", action="store_true", help="m4a だけ作る（動画を作らない）")
     a = ap.parse_args()
 
@@ -336,12 +338,18 @@ def main():
     names = a.names
     if names == ["all"]:
         names = sorted(p.stem for p in LECTURE_DIR.glob("*.json") if p.name != "voices.json")
+    # 複数の分野をまとめて作るときは、ボイスを 1 回だけ選んで全部に使う（--each なら分野ごとに選ぶ）
+    common = a.speaker
+    if common is None and a.engine == "voicevox" and len(names) > 1 and not a.each:
+        speed0 = a.speed if a.speed is not None else float(voices.get("speed", SPEED))
+        common = choose_speaker("、".join(names), voices.get("default", mv.SPEAKER), speed0)
+        save_voice("default", common)
     for n in names:
         script = load_script(n)
         speed = a.speed if a.speed is not None else float(script.get("speed", voices.get("speed", SPEED)))
         default = script.get("speaker", voices.get(n, voices.get("default", mv.SPEAKER)))
-        if a.speaker is not None:
-            speaker = a.speaker
+        if common is not None:
+            speaker = common
         elif a.engine == "voicevox":
             speaker = choose_speaker(n, default, speed)
         else:
