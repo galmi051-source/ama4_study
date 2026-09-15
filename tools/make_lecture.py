@@ -46,6 +46,7 @@ import argparse
 import hashlib
 import html
 import json
+import os
 import re
 import time
 import traceback
@@ -172,10 +173,14 @@ def slide_html(script, i, slide, total):
 def render_png(edge, html_path, png_path):
     # 専用のプロファイルを使う（普段の Edge が開いていても衝突しないように）
     profile = Path(tempfile.gettempdir()) / "ama4_lecture_edge_profile"
+    # Claude Desktop などのターミナルから実行すると __COMPAT_LAYER（互換モード）や CHROME_* の
+    # 環境変数を引き継ぎ、Edge が何もせず即終了してしまう。それらを外して起動する
+    env = {k: v for k, v in os.environ.items()
+           if not k.upper().startswith("CHROME_") and k.upper() != "__COMPAT_LAYER"}
     r = subprocess.run([edge, "--headless=new", "--disable-gpu", "--hide-scrollbars", "--no-first-run",
                         f"--user-data-dir={profile}", f"--window-size={W},{H}",
                         f"--screenshot={png_path}", html_path.as_uri()],
-                       capture_output=True, text=True, timeout=120)
+                       capture_output=True, text=True, timeout=120, env=env)
     if not Path(png_path).exists():
         raise RuntimeError(f"Edge でスライドを画像にできませんでした（exit {r.returncode}）: {r.stderr.strip()[-300:]}")
 
