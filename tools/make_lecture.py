@@ -2,9 +2,16 @@
 """
 分野ごとの「講義動画」（スライド＋読み上げ）を作る。
 
-    python tools/make_lecture.py 電源            # 1分野
+    python tools/make_lecture.py 電源            # 1分野。ボイスの一覧が出るので番号を入力
     python tools/make_lecture.py all             # tools/lecture/*.json 全部
+    python tools/make_lecture.py 電源 --speaker 8 --speed 0.8   # 一覧を出さずにすぐ作る
+    python tools/make_lecture.py --speakers      # ボイスの番号一覧だけ表示
     python tools/make_lecture.py 電源 --engine sapi   # VOICEVOX 無しで Windows の音声で試作
+
+ボイスと速さ:
+  - 実行すると一覧が出る。番号を入力、Enter で voices.json の設定、「t 8」で試聴
+  - 選んだ番号は tools/lecture/voices.json にその分野の値として保存される（次回の既定）
+  - 話す速さは --speed（1.0 が標準。0.8 でゆっくり）。voices.json の "speed" が既定
 
 必要なもの:
   - VOICEVOX を起動しておく（--engine sapi のときは不要）
@@ -55,6 +62,8 @@ OUT_DIR = ROOT / "lectures"
 VOICES = LECTURE_DIR / "voices.json"
 
 W, H = 1280, 720
+SPEED = 0.9               # 話す速さの既定（1.0 が VOICEVOX 標準）。voices.json の "speed" か --speed で変更
+PREVIEW_TEXT = "無線工学、電源の講義です。1.5ボルトの乾電池を4本直列にすると6ボルトになります。"
 PAUSE_AFTER_SLIDE = 0.8   # スライドの最後に入れる無音（秒）
 FPS = 10
 
@@ -162,32 +171,90 @@ def render_png(edge, html_path, png_path):
 
 
 # ---------- 音声 ----------
-def sapi_wav(text, out):
-    """Windows 標準の音声合成（試作用）"""
+def sapi_wav(text, out, speed=1.0):
+    """Windows 標準の音声合成（試作用）。speed 1.0 → Rate 0、0.8 → Rate -2"""
+    rate = max(-10, min(10, round((speed - 1.0) * 10)))
     txt = Path(f"{out}.txt")
     txt.write_text(text, encoding="utf-8")
     ps = ("Add-Type -AssemblyName System.Speech;"
           "$s = New-Object System.Speech.Synthesis.SpeechSynthesizer;"
-          "$s.SelectVoice('Microsoft Haruka Desktop'); $s.Rate = 1;"
+          f"$s.SelectVoice('Microsoft Haruka Desktop'); $s.Rate = {rate};"
           f"$s.SetOutputToWaveFile('{out}');"
           f"$s.Speak([IO.File]::ReadAllText('{txt}', [Text.Encoding]::UTF8)); $s.Dispose()")
     subprocess.run(["powershell", "-NoProfile", "-Command", ps], check=True, capture_output=True)
     txt.unlink()
 
 
-def make_audio(text, speaker, engine, read):
+def voicevox_wav(text, speaker, speed):
+    q = json.loads(mv.api("POST", "/audio_query", {"text": text, "speaker": speaker}))
+    q.update(speedScale=speed, pitchScale=mv.PITCH, intonationScale=mv.INTONATION,
+             prePhonemeLength=0.15, postPhonemeLength=0.3,
+             outputSamplingRate=mv.SAMPLING_RATE, outputStereo=False)
+    return mv.api("POST", "/synthesis", {"speaker": speaker}, q, timeout=mv.SYNTH_TIMEOUT)
+
+
+def make_audio(text, speaker, speed, engine, read):
     """読み上げ音声を作って wav のパスを返す（キャッシュあり）"""
     CACHE_DIR.mkdir(exist_ok=True)
     spoken = read(text)
-    key = hashlib.md5(f"{engine}|{speaker}|{spoken}".encode("utf-8")).hexdigest()
+    key = hashlib.md5(f"{engine}|{speaker}|{speed}|{spoken}".encode("utf-8")).hexdigest()
     wav = CACHE_DIR / f"{key}.wav"
     if wav.exists():
         return wav
     if engine == "sapi":
-        sapi_wav(spoken, wav)
+        sapi_wav(spoken, wav, speed)
     else:
-        wav.write_bytes(mv.synth(spoken, speaker))
+        wav.write_bytes(voicevox_wav(spoken, speaker, speed))
     return wav
+
+
+# ---------- ボイス選択 ----------
+def load_voices():
+    return json.loads(VOICES.read_text(encoding="utf-8")) if VOICES.exists() else {}
+
+
+def save_voice(name, speaker):
+    v = load_voices()
+    v[name] = speaker
+    VOICES.write_text(json.dumps(v, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
+def choose_speaker(name, default, speed):
+    """ボイスの一覧を出して番号を入力してもらう。Enter なら default。t 番号 で試聴。"""
+    styles = mv.fetch_styles()
+    names = {sid: f"{n}（{st}）" for sid, n, st in styles}
+    if default not in names:
+        default = styles[0][0]
+    if not sys.stdin.isatty():
+        print(f"ボイス: {default} {names[default]}")
+        return default
+    print(f"\n「{name}」のボイスを選んでください（番号 スタイル）")
+    mv.list_speakers(styles)
+    print(f"\n今の設定: {default} {names[default]}　速さ {speed}")
+    while True:
+        s = input("番号を入力（Enter=今の設定 / t 番号=試聴 / q=やめる）: ").strip().lower()
+        s = s.translate(str.maketrans("０１２３４５６７８９　ｔｑ", "0123456789 tq"))
+        if s == "":
+            return default
+        if s == "q":
+            sys.exit("中止しました")
+        if s.startswith("t"):
+            rest = s[1:].strip()
+            sid = int(rest) if rest.isdigit() else default
+            if sid not in names:
+                print(f"  {sid} は一覧にありません")
+                continue
+            print(f"  試聴: {sid} {names[sid]} …")
+            try:
+                mv.PREVIEW.write_bytes(voicevox_wav(PREVIEW_TEXT, sid, speed))
+                mv.play_wav(mv.PREVIEW)
+            except Exception as e:
+                print(f"  音声を作れませんでした（{e}）")
+            continue
+        if s.isdigit() and int(s) in names:
+            print(f"  → {int(s)} {names[int(s)]} に決定")
+            return int(s)
+        print("  一覧にある番号を入力してください（例: 3 / 試聴は t 3）")
 
 
 # ---------- 動画 ----------
@@ -195,7 +262,7 @@ def ff(*args):
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", *map(str, args)], check=True)
 
 
-def build(script, engine, speaker, edge, audio_only):
+def build(script, engine, speaker, speed, edge, audio_only):
     read = mv.make_reader(mv.load_user_yomi())
     slides = script["slides"]
     total = len(slides)
@@ -209,7 +276,7 @@ def build(script, engine, speaker, edge, audio_only):
             say = narration(sl)
             texts.append(f"--- {i + 1}. {sl.get('title', '')}\n{say}\n")
             print(f"  [{i + 1}/{total}] {sl.get('title', '')[:30]} … 音声", end="", flush=True)
-            wav = make_audio(say, speaker, engine, read) if say else None
+            wav = make_audio(say, speaker, speed, engine, read) if say else None
             if audio_only:
                 seg = tdp / f"seg{i:03d}.m4a"
                 if wav is None:
@@ -246,27 +313,43 @@ def build(script, engine, speaker, edge, audio_only):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("names", nargs="+", help="分野名（tools/lecture/<名前>.json）または all")
+    ap.add_argument("names", nargs="*", help="分野名（tools/lecture/<名前>.json）または all")
     ap.add_argument("--engine", choices=["voicevox", "sapi"], default="voicevox")
-    ap.add_argument("--speaker", type=int, help="話者番号（voices.json より優先）")
+    ap.add_argument("--speaker", type=int, help="話者番号（一覧を出さずにこの番号で作る）")
+    ap.add_argument("--speakers", action="store_true", help="ボイスの番号一覧を表示して終了")
+    ap.add_argument("--speed", type=float, help=f"話す速さ（1.0 が標準。既定 {SPEED}）")
     ap.add_argument("--audio-only", action="store_true", help="m4a だけ作る（動画を作らない）")
     a = ap.parse_args()
 
-    need("ffmpeg")
-    edge = None if a.audio_only else find_edge()
-    voices = json.loads(VOICES.read_text(encoding="utf-8")) if VOICES.exists() else {}
     if a.engine == "voicevox":
         mv.check_engine()
+    if a.speakers:
+        mv.list_speakers()
+        return
+    if not a.names:
+        ap.error("分野名を指定してください（例: 電源 / all）")
+
+    need("ffmpeg")
+    edge = None if a.audio_only else find_edge()
+    voices = load_voices()
 
     names = a.names
     if names == ["all"]:
         names = sorted(p.stem for p in LECTURE_DIR.glob("*.json") if p.name != "voices.json")
     for n in names:
         script = load_script(n)
-        speaker = a.speaker if a.speaker is not None else script.get(
-            "speaker", voices.get(n, voices.get("default", mv.SPEAKER)))
-        print(f"== {script['subject']}｜{script['title']}（話者 {speaker}, {a.engine}）")
-        build(script, a.engine, speaker, edge, a.audio_only)
+        speed = a.speed if a.speed is not None else float(script.get("speed", voices.get("speed", SPEED)))
+        default = script.get("speaker", voices.get(n, voices.get("default", mv.SPEAKER)))
+        if a.speaker is not None:
+            speaker = a.speaker
+        elif a.engine == "voicevox":
+            speaker = choose_speaker(n, default, speed)
+        else:
+            speaker = default
+        if a.engine == "voicevox" and speaker != voices.get(n):
+            save_voice(n, speaker)
+        print(f"== {script['subject']}｜{script['title']}（話者 {speaker}, 速さ {speed}, {a.engine}）")
+        build(script, a.engine, speaker, speed, edge, a.audio_only)
 
 
 if __name__ == "__main__":
