@@ -65,6 +65,15 @@ flutter run
 - 読み間違いを直す：`python tools/make_voice.py --only-daihon` で台本だけ作って確認 → 全問に効かせたい読みは `tools/yomi.tsv` に「表記<TAB>読み」で追加、その問題だけなら JSON の `readQuestion` / `readExplanation` に書く
 - 読み上げ速度の設定は音声ファイルの再生速度にも反映されます（0.5 が等倍）
 
+## 講義動画を作る（分野ごとの解説スライド＋読み上げ）
+```bash
+python tools/make_lecture.py 電源          # VOICEVOX を起動しておく
+python tools/make_lecture.py all
+```
+- 台本は `tools/lecture/<分野>.json`、図は `tools/lecture/fig/*.svg`、分野ごとの声は `tools/lecture/voices.json`
+- 出力は `lectures/<分野>.mp4`（動画）と `.m4a`（音声だけ）。Git には入れない
+- VOICEVOX 無しで試すときは `--engine sapi`（Windows 標準の音声）
+
 ## 問題の追加
 `assets/questions/` に JSON を置いてビルドし直すだけで読み込まれます（ファイル名は自由）。
 

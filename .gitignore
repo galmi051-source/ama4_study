@@ -47,3 +47,7 @@ app.*.map.json
 # ---- このプロジェクト用 ----
 # assets/voice/*.m4a はコミットに含める（無いと音が鳴らない）。除外しないこと。
 tools/__pycache__/
+
+# 講義動画の出力と音声キャッシュ（大きいので Git に入れない）
+/lectures/
+/tools/lecture/cache/
