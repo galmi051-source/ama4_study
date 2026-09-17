@@ -4,6 +4,7 @@
 
     python tools/make_lecture.py 電源            # 1分野。ボイスの一覧が出るので番号を入力
     python tools/make_lecture.py all             # 全部まとめて。ボイスは 1 回選べば全分野に使われる
+    python tools/make_lecture.py 法規            # 法規の分野だけ全部（無線工学 も同様）
     python tools/make_lecture.py all --each      # 分野ごとに別のボイスを選ぶ（最初に全部聞かれ、あとは放置）
     python tools/make_lecture.py 電源 --speaker 8 --speed 0.8   # 一覧を出さずにすぐ作る
     python tools/make_lecture.py --speakers      # ボイスの番号一覧だけ表示
@@ -389,6 +390,9 @@ def main():
     names = a.names
     if names == ["all"]:
         names = sorted(p.stem for p in LECTURE_DIR.glob("*.json") if p.name != "voices.json")
+    elif names in (["法規"], ["無線工学"]):   # 科目名なら、その科目の台本を全部
+        names = sorted(p.stem for p in LECTURE_DIR.glob("*.json")
+                       if p.name != "voices.json" and load_script(p.stem)["subject"] == names[0])
     # 複数の分野をまとめて作るときは、ボイスを 1 回だけ選んで全部に使う（--each なら分野ごとに選ぶ）
     common = a.speaker
     if common is None and a.engine == "voicevox" and len(names) > 1 and not a.each:

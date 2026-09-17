@@ -566,6 +566,261 @@ def fig_tx_block():
     f.save("fig_tx_block")
 
 
+# ================= 法規 =================
+def fig_law_purpose():
+    f = Fig()
+    f.text(260, 40, "電波法 第1条（目的）", 22, INK, bold=True)
+    f.box(40, 70, 440, 120, "", fill="#FFF6E5", stroke=AMBER)
+    f.text(260, 105, "電波の", 20, INK); f.text(260, 135, "公平かつ能率的な利用", 26, RED, bold=True); f.text(260, 170, "を確保することによって", 18, INK)
+    f.box(40, 210, 440, 70, "", fill="#FFF6E5", stroke=AMBER)
+    f.text(260, 240, "公共の福祉を増進", 26, RED, bold=True); f.text(260, 268, "することを目的とする", 16, INK)
+    f.text(260, 320, "✕ 有効な利用　✕ 電気通信事業の発展", 17, MUTED)
+    f.text(260, 348, "✕ 通信の秘密　✕ 無線技術の向上", 17, MUTED)
+    f.text(260, 385, "キーワード 2 つがそろった選択肢を選ぶ", 17, RED)
+    f.save("fig_law_purpose")
+
+
+def fig_station_def():
+    f = Fig()
+    f.box(40, 40, 440, 100, "", fill="#FFF6E5", stroke=RED)
+    f.text(260, 70, "無線局 ＝ 無線設備 ＋ 操作する者（総体）", 20, RED, bold=True)
+    f.text(260, 100, "ただし 受信のみを目的とするものは含まない", 17, INK)
+    f.text(260, 125, "（設備だけでなく人も含む）", 14, MUTED)
+    f.box(40, 160, 440, 80, "", fill="#fff", stroke=INK)
+    f.text(260, 190, "無線設備 ＝ 電波を送り、又は受けるための電気的設備", 17, INK, bold=True)
+    f.text(260, 218, "（人は含まない）", 14, MUTED)
+    f.box(40, 260, 440, 80, "", fill="#fff", stroke=INK)
+    f.text(260, 290, "送信設備 ＝ 送信装置 ＋ 送信空中線系", 17, INK, bold=True)
+    f.text(260, 318, "（電波を送る設備）", 14, MUTED)
+    f.text(260, 380, "「設備＋人」なら無線局、「設備だけ」なら無線設備", 16, RED)
+    f.save("fig_station_def")
+
+
+def fig_amateur_def():
+    f = Fig()
+    f.text(260, 40, "アマチュア業務の定義", 22, INK, bold=True)
+    f.text(260, 85, "金銭上の利益のためでなく", 22, RED, bold=True)
+    f.text(260, 120, "もっぱら 個人的な無線技術の興味 によって行う", 19, INK)
+    for i, (t, x) in enumerate([("自己訓練", 100), ("通　信", 260), ("技術的研究", 420)]):
+        f.box(x - 65, 160, 130, 60, t, fill="#FFF6E5", stroke=AMBER, size=20, color=RED, bold=True)
+        if i < 2:
+            f.text(x + 82, 197, "＋", 22, INK)
+    f.text(260, 260, "の業務", 20, INK)
+    f.text(260, 310, "3 点セット。穴埋めは「技術的研究」", 18, RED)
+    f.text(260, 350, "✕ 公共の福祉（→ 電波法の目的）　✕ 災害の救援　✕ 放送", 15, MUTED)
+    f.save("fig_amateur_def")
+
+
+def fig_license_timeline():
+    f = Fig()
+    f.line(40, 200, 480, 200, INK, 4)
+    f.parts.append(f'<circle cx="60" cy="200" r="9" fill="{INK}"/>'); f.text(60, 240, "免許の日", 16, INK)
+    f.parts.append(f'<circle cx="460" cy="200" r="9" fill="{RED}"/>'); f.text(460, 240, "満了", 16, RED, bold=True)
+    f.arrow(70, 150, 450, 150, MUTED, 2); f.arrow(450, 150, 70, 150, MUTED, 2)
+    f.text(260, 138, "有効期間 5 年", 24, RED, bold=True)
+    f.parts.append(f'<rect x="300" y="190" width="147" height="20" fill="{AMBER}" opacity="0.8"/>')
+    f.text(373, 310, "再免許の申請期間", 18, RED, bold=True)
+    f.text(373, 336, "満了前 1 か月以上 1 年以内", 18, INK)
+    f.text(373, 358, "（改正前の問題では 6 か月以内）", 14, MUTED)
+    f.line(447, 205, 447, 260, MUTED, 1.5, dash="4,4"); f.text(447, 275, "1 か月前", 12, MUTED)
+    f.line(300, 205, 300, 260, MUTED, 1.5, dash="4,4"); f.text(300, 275, "1 年前", 12, MUTED)
+    f.text(260, 388, "無線従事者の免許証には有効期間がない", 14, MUTED)
+    f.save("fig_license_timeline")
+
+
+def fig_permission():
+    f = Fig()
+    f.text(140, 40, "前もって 許可 が必要", 20, RED, bold=True)
+    f.box(30, 60, 220, 70, "無線設備の\n設置場所を変える", fill="#FFF6E5", stroke=RED, size=17, color=INK, bold=True)
+    f.box(30, 145, 220, 70, "無線設備の\n変更の工事", fill="#FFF6E5", stroke=RED, size=17, color=INK, bold=True)
+    f.text(140, 245, "＝ 設備をいじる・動かす", 15, RED)
+    f.text(380, 40, "許可ではない", 20, MUTED, bold=True)
+    for i, t in enumerate(["免許人の氏名の変更（届出）", "無線局の運用の休止", "無線局の廃止（届出）", "免許状の訂正"]):
+        f.text(380, 85 + i * 40, t, 16, MUTED)
+    f.line(270, 60, 270, 240, LINE, 2)
+    f.text(260, 330, "「許可が必要なのはどれか」→ 上の 2 つのどちらか", 16, INK)
+    f.save("fig_permission")
+
+
+def fig_emission():
+    f = Fig()
+    for i, (ch, col) in enumerate([("J", RED), ("3", BLUE), ("E", GREEN)]):
+        x = 110 + i * 150
+        f.box(x - 45, 30, 90, 80, ch, fill="#fff", stroke=col, size=48, color=col, bold=True)
+    f.text(110, 140, "変調の方式", 17, RED, bold=True); f.text(260, 140, "信号の性質", 17, BLUE, bold=True); f.text(410, 140, "情報の種類", 17, GREEN, bold=True)
+    for i, t in enumerate(["A ＝ AM（両側波帯）", "J ＝ SSB（抑圧搬送波・単側波帯）", "F ＝ FM（周波数変調）", "H 全搬送波 / R 低減搬送波"]):
+        f.text(20, 175 + i * 26, t, 14, RED if i < 3 else MUTED, anchor="start")
+    for i, t in enumerate(["3 ＝ アナログ", "　　単一チャネル", "1 ＝ デジタル（モールス）", "2 ＝ デジタル・副搬送波"]):
+        f.text(215, 175 + i * 26, t, 14, BLUE if i < 2 else MUTED, anchor="start")
+    for i, t in enumerate(["E ＝ 電話（音声）", "A ＝ 電信（モールス）", "D ＝ データ"]):
+        f.text(375, 175 + i * 26, t, 14, GREEN if i == 0 else MUTED, anchor="start")
+    f.line(30, 295, 490, 295, LINE, 1.5)
+    f.text(260, 325, "A3E ＝ AM 電話　　J3E ＝ SSB 電話", 18, INK, bold=True)
+    f.text(260, 355, "F3E ＝ FM 電話　　A1A ＝ モールス電信", 18, INK, bold=True)
+    f.save("fig_emission")
+
+
+def fig_bandwidth():
+    f = Fig()
+    f.line(40, 250, 480, 250, INK, 3)
+    f.parts.append(f'<rect x="120" y="100" width="280" height="150" fill="#EAF6EE" stroke="{GREEN}" stroke-width="2"/>')
+    f.text(260, 90, "動作することを許された周波数帯（バンド）", 15, GREEN, bold=True)
+    f.parts.append(f'<polygon points="200,250 240,150 280,250" fill="{BLUE}" opacity="0.8"/>')
+    f.arrow(200, 275, 280, 275, BLUE, 2); f.arrow(280, 275, 200, 275, BLUE, 2); f.text(240, 300, "占有周波数帯幅", 14, BLUE, bold=True)
+    f.text(240, 135, "OK", 16, BLUE, bold=True)
+    f.parts.append(f'<polygon points="370,250 400,150 430,250" fill="{RED}" opacity="0.8"/>')
+    f.text(430, 135, "はみ出し ✕", 16, RED, bold=True)
+    f.text(260, 350, "幅の分まで含めてバンドの中に収める", 18, INK, bold=True)
+    f.text(260, 380, "穴埋め：「占有する［周波数帯幅］」", 16, RED)
+    f.save("fig_bandwidth")
+
+
+def fig_4ama_range():
+    f = Fig()
+    f.line(40, 200, 480, 200, INK, 3)
+    segs = [(40, 150, "8MHz 以下", "10W", GREEN, "1.9・3.5・7"), (150, 260, "8〜21MHz", "✕", MUTED, "10・14・18"),
+            (260, 340, "21〜30MHz", "10W", GREEN, "21・24・28"), (340, 480, "30MHz 超", "20W", RED, "50・144・430")]
+    for x1, x2, lab, pw, col, ex in segs:
+        f.parts.append(f'<rect x="{x1}" y="150" width="{x2-x1}" height="50" fill="{col}" opacity="{0.25 if col == MUTED else 0.85}"/>')
+        f.text((x1 + x2) / 2, 183, pw, 22 if pw != "✕" else 26, "#fff" if col != MUTED else RED, bold=True)
+        f.text((x1 + x2) / 2, 230, lab, 15, INK, bold=True); f.text((x1 + x2) / 2, 252, ex + " MHz帯", 12, MUTED)
+    for x, v in [(150, "8"), (260, "21"), (340, "30")]:
+        f.line(x, 140, x, 205, INK, 2); f.text(x, 130, v + "MHz", 14, INK, bold=True)
+    f.text(260, 60, "4アマの操作範囲", 22, INK, bold=True)
+    f.text(260, 92, "20W は 30MHz 超だけ。10・14・18MHz 帯は操作できない", 15, RED)
+    f.text(260, 320, "モールス符号による通信操作は含まれない", 16, MUTED)
+    f.save("fig_4ama_range")
+
+
+def fig_return_days():
+    f = Fig()
+    f.text(140, 45, "無線従事者 免許証（人）", 18, RED, bold=True)
+    f.box(40, 65, 200, 90, "10 日以内\nに返納", fill="#FFF6E5", stroke=RED, size=22, color=RED, bold=True)
+    for i, t in enumerate(["・免許の取消しを受けた", "・再交付後に見つかった", "・死亡／失そうの宣告"]):
+        f.text(40, 185 + i * 24, t, 14, INK, anchor="start")
+    f.text(140, 275, "有効期間は無い", 14, MUTED)
+    f.text(380, 45, "無線局 免許状（局）", 18, BLUE, bold=True)
+    f.box(280, 65, 200, 90, "1 か月以内\nに返納", fill="#EEF3FA", stroke=BLUE, size=22, color=BLUE, bold=True)
+    f.text(280, 185, "・免許が効力を失った", 14, INK, anchor="start")
+    f.text(280, 209, "・有効期間は 5 年", 14, INK, anchor="start")
+    f.text(280, 245, "免許記録の写しは", 14, MUTED, anchor="start"); f.text(280, 265, "返納でなく「廃棄」", 14, MUTED, anchor="start")
+    f.text(260, 340, "免許証 10 日 ／ 免許状 1 か月", 22, INK, bold=True)
+    f.text(260, 372, "運用停止・従事停止は 3 か月以内", 15, MUTED)
+    f.save("fig_return_days")
+
+
+def fig_call_reply():
+    f = Fig()
+
+    def row(y, title, items, col):
+        f.text(20, y - 30, title, 18, col, bold=True, anchor="start")
+        x = 20
+        for lab, n, hi in items:
+            w = 150
+            f.box(x, y - 15, w, 56, "", fill="#FFF6E5" if hi else "#fff", stroke=col if hi else INK)
+            f.text(x + w / 2, y + 8, lab, 14, INK); f.text(x + w / 2, y + 32, n, 18, RED if hi else INK, bold=True)
+            x += w + 12
+            if x < 470:
+                f.arrow(x - 12, y + 13, x, y + 13, MUTED, 2)
+    row(80, "呼出し（呼ぶ側）", [("相手局の呼出符号", "3 回以下", False), ("こちらは", "1 回", False), ("自局の呼出符号", "3 回以下", True)], INK)
+    row(220, "応答（呼ばれた側）", [("相手局の呼出符号", "3 回以下", False), ("こちらは", "1 回", False), ("自局の呼出符号", "1 回", True)], BLUE)
+    f.text(260, 330, "違いは最後の自局：呼出し 3 回以下 ／ 応答 1 回", 18, RED, bold=True)
+    f.text(260, 365, "順番はどちらも「相手が先、自分が後」", 15, MUTED)
+    f.save("fig_call_reply")
+
+
+def fig_test_wave():
+    f = Fig()
+    steps = [("① 聴守", "その周波数で受信して\n混信を与えないことを確認", GREEN), ("② 擬似空中線回路", "できればダミーロードで\n電波を出さずに調整", INK), ("③ 試験電波", "「本日は晴天なり」＋呼出符号\n10 秒 を超えない", RED)]
+    for i, (t, d, c) in enumerate(steps):
+        y = 40 + i * 110
+        f.box(30, y, 150, 80, t, fill="#FFF6E5" if c == RED else "#fff", stroke=c, size=17, color=c, bold=True)
+        lines = d.split("\n")
+        f.text(200, y + 32, lines[0], 16, INK, anchor="start"); f.text(200, y + 58, lines[1], 16, RED if c == RED else INK, anchor="start", bold=(c == RED))
+        if i < 2:
+            f.arrow(105, y + 80, 105, y + 110, MUTED, 2)
+    f.text(260, 385, "確かめるのは「混信を与えないこと」（他局が通信していないこと、ではない）", 13, MUTED)
+    f.save("fig_test_wave")
+
+
+def fig_ops_numbers():
+    f = Fig()
+    rows = [("3 分", "応答がないとき、呼出しを再開するまであける間隔", RED), ("10 分", "長時間の送信中、「こちらは」＋自局の呼出符号を送る間隔", RED),
+            ("直ちに", "通信上の誤りを知ったときの訂正", BLUE), ("反復", "反復を求めるとき：「反復」の次に箇所を示す", BLUE), ("さようなら", "通信が終了したとき", BLUE)]
+    for i, (n, d, c) in enumerate(rows):
+        y = 40 + i * 66
+        f.box(30, y, 120, 50, n, fill="#FFF6E5", stroke=c, size=19, color=c, bold=True)
+        f.text(165, y + 31, d, 14, INK, anchor="start")
+    f.save("fig_ops_numbers")
+
+
+def fig_emergency():
+    f = Fig()
+    f.text(260, 40, "非常通信", 22, INK, bold=True)
+    f.text(260, 72, "有線通信が使えない／著しく困難なときの通信", 15, MUTED)
+    f.text(120, 120, "呼出し", 18, INK, bold=True)
+    f.box(30, 140, 90, 50, "非常", fill="#FFF6E5", stroke=RED, size=18, color=RED, bold=True); f.text(75, 210, "3 回", 18, RED, bold=True)
+    f.arrow(120, 165, 140, 165, MUTED, 2); f.box(140, 140, 120, 50, "呼出事項", size=16)
+    f.text(75, 235, "前に", 14, MUTED)
+    f.text(390, 120, "応答", 18, BLUE, bold=True)
+    f.box(280, 140, 120, 50, "応答事項", size=16); f.arrow(400, 165, 420, 165, MUTED, 2)
+    f.box(420, 140, 80, 50, "非常", fill="#EEF3FA", stroke=BLUE, size=18, color=BLUE, bold=True); f.text(460, 210, "1 回", 18, BLUE, bold=True)
+    f.text(460, 235, "次に", 14, MUTED)
+    f.text(260, 290, "前に 3 回 ／ 後ろに 1 回", 20, INK, bold=True)
+    f.text(260, 330, "混信防止の規定の例外（遭難・緊急・安全・非常）", 15, MUTED)
+    f.text(260, 360, "行ったら 総務大臣に報告", 16, RED, bold=True)
+    f.save("fig_emergency")
+
+
+def fig_prohibited():
+    f = Fig()
+    rows = [("秘密の保護", "特定の相手方への通信を傍受して 漏らす・窃用 ✕（聞くこと自体は ✕ではない）"),
+            ("暗語", "使ってはならない（略語・Q符号・通話表は OK）"),
+            ("他人の依頼", "頼まれた通報は送信できない（非常時の救助・救援用は例外）"),
+            ("放送に支障", "テレビ・ラジオに支障 → 速やかにその周波数での発射を中止")]
+    for i, (t, d) in enumerate(rows):
+        y = 40 + i * 80
+        f.box(30, y, 130, 56, t, fill="#FFF6E5", stroke=RED, size=16, color=RED, bold=True)
+        f.text(175, y + 34, d, 13, INK, anchor="start")
+    f.save("fig_prohibited")
+
+
+def fig_sanction():
+    f = Fig()
+    f.text(260, 40, "電波法に違反したとき", 20, INK, bold=True)
+    f.box(40, 70, 200, 110, "運用の停止\n3 か月以内", fill="#FFF6E5", stroke=RED, size=20, color=RED, bold=True)
+    f.box(280, 70, 200, 110, "運用時間・周波数\n空中線電力の制限", fill="#fff", stroke=INK, size=16)
+    f.text(260, 215, "無線従事者の業務従事停止も 3 か月以内", 15, MUTED)
+    f.box(40, 250, 440, 60, "不正な手段で免許を受けた → 免許の取消し", fill="#FDECEA", stroke=RED, size=17, color=RED, bold=True)
+    f.text(260, 350, "✕ 従事者の解任命令　✕ 相手方の制限　✕ 電波の型式の制限", 14, MUTED)
+    f.save("fig_sanction")
+
+
+def fig_report():
+    f = Fig()
+    f.box(30, 60, 190, 70, "非常通信を\n行った", size=17)
+    f.box(30, 170, 190, 70, "違反して運用する\n無線局を見つけた", size=17)
+    f.arrow(220, 95, 300, 145, RED, 3); f.arrow(220, 205, 300, 160, RED, 3)
+    f.box(300, 110, 190, 90, "総務大臣に\n報告", fill="#FFF6E5", stroke=RED, size=22, color=RED, bold=True)
+    f.text(260, 290, "報告先はいつも総務大臣", 20, INK, bold=True)
+    f.text(260, 325, "✕ 警察署　✕ 市町村長　✕ 都道府県知事　✕ 中央防災会議会長", 13, MUTED)
+    f.text(260, 360, "宇宙無線通信・国際通信・試験の通信は報告不要", 13, MUTED)
+    f.save("fig_report")
+
+
+def fig_license_place():
+    f = Fig()
+    f.parts.append(f'<polygon points="80,150 180,70 280,150" fill="{INK}"/><rect x="100" y="150" width="160" height="120" fill="#fff" stroke="{INK}" stroke-width="3"/>')
+    f.box(140, 190, 80, 50, "免許状", fill="#FFF6E5", stroke=RED, size=15, color=RED, bold=True)
+    f.text(180, 300, "無線設備の常置場所", 18, RED, bold=True); f.text(180, 322, "（ふだん無線機を置いてある所）", 13, MUTED)
+    f.parts.append(f'<rect x="340" y="170" width="140" height="60" rx="10" fill="{MUTED}"/><rect x="365" y="140" width="80" height="40" rx="8" fill="{MUTED}"/>')
+    f.parts.append(f'<circle cx="370" cy="235" r="14" fill="{INK}"/><circle cx="450" cy="235" r="14" fill="{INK}"/>')
+    f.line(410, 140, 410, 100, INK, 3)
+    f.text(410, 300, "移動運用", 16, INK); f.text(410, 322, "免許状を持ち歩く必要はない", 13, MUTED)
+    f.text(260, 375, "移動するアマチュア局の免許状 → 常置場所に備え付け", 15, INK, bold=True)
+    f.save("fig_license_place")
+
+
 if __name__ == "__main__":
     OUT.mkdir(exist_ok=True)
     n = 0
