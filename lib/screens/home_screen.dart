@@ -75,7 +75,8 @@ class HomeScreen extends StatelessWidget {
             title: '分野を選んで解く',
             subtitle: app.store.lastRange == null
                 ? '法規・無線工学の分野ごと'
-                : '前回：${app.store.lastRange}　${app.store.lastRangeDone}/${app.store.lastRangeTotal}問まで',
+                : '前回：${app.store.lastRange}　${app.store.lastRangeDone}/${app.store.lastRangeTotal}問まで'
+                    '${app.store.lastStudied(app.repo.all.map((q) => q.id)) == null ? '' : '（${formatLast(app.store.lastStudied(app.repo.all.map((q) => q.id))!)}）'}',
             onTap: () => showRangeSheet(context, listen: false),
           ),
           _ActionTile(
@@ -195,72 +196,210 @@ class _WarningCard extends StatelessWidget {
 }
 
 /// 出題範囲を選ぶシート（ながら聞き／分野別の両方で使う）
+/// 出題範囲を選ぶシート（ながら聞き／分野別の両方で使う）。
+/// 最初に「今日の復習・苦手・すべて」と科目（法規／無線工学）を出し、
+/// 科目を選ぶとその分野の一覧に切り替わる（全部を一度に並べると長くなるため）。
 void showRangeSheet(BuildContext context, {required bool listen}) {
   final app = AppScope.read(context);
-  final entries = <(String, List<Question>)>[
-    ('今日の復習', app.todaySet()),
-    ('苦手な問題', app.weak()),
-    ('すべて（シャッフル）', List.of(app.repo.all)..shuffle()),
-  ];
-  for (final s in Subjects.all) {
-    entries.add(('$s（すべて）', app.subjectSet(s)));
-    for (final c in app.repo.categories(s)) {
-      entries.add(('$s｜$c', app.subjectSet(s, category: c)));
-    }
-  }
+  String? subject; // 選んだ科目。null なら最初の画面
 
   showModalBottomSheet<void>(
     context: context,
     showDragHandle: true,
     isScrollControlled: true,
-    builder: (ctx) => DraggableScrollableSheet(
-      expand: false,
-      initialChildSize: 0.6,
-      maxChildSize: 0.9,
-      builder: (ctx, controller) => ListView(
-        controller: controller,
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
-            child: Text(listen ? 'ながら聞きの範囲' : '解く範囲',
-                style: const TextStyle(
-                    fontSize: 17, fontWeight: FontWeight.w700)),
-          ),
-          for (final (label, qs) in entries)
-            ListTile(
-              enabled: qs.isNotEmpty,
-              selected: !listen && label == app.store.lastRange,
-              selectedTileColor: const Color(0xFFFFF6E5),
-              title: Text(label),
-              // 分野別：解いたことのある問題数と、前回どこまで進んだか
-              subtitle: listen || qs.isEmpty
-                  ? null
-                  : Text(
-                      '解いた ${app.store.doneCount(qs.map((q) => q.id))}/${qs.length}問'
-                      '${label == app.store.lastRange ? '　← 前回ここまで（${app.store.lastRangeDone}/${app.store.lastRangeTotal}問目）' : ''}',
-                      style: TextStyle(
-                          fontSize: 12,
-                          color: label == app.store.lastRange
-                              ? AppColors.ink
-                              : AppColors.muted)),
-              trailing: Text('${qs.length}問',
-                  style: const TextStyle(color: AppColors.muted)),
-              onTap: () {
-                Navigator.pop(ctx);
-                _push(
-                  context,
-                  listen
-                      ? ListenScreen(questions: qs, title: label)
-                      : QuizScreen(
-                          questions: qs, title: label, trackRange: true),
-                );
-              },
-            ),
-          const SizedBox(height: 16),
-        ],
+    builder: (ctx) => StatefulBuilder(
+      builder: (ctx, setSheet) => DraggableScrollableSheet(
+        expand: false,
+        initialChildSize: 0.6,
+        maxChildSize: 0.9,
+        builder: (ctx, controller) {
+          final entries = <(String, List<Question>)>[];
+          if (subject == null) {
+            entries.addAll([
+              ('今日の復習', app.todaySet()),
+              ('苦手な問題', app.weak()),
+              ('すべて（シャッフル）', List.of(app.repo.all)..shuffle()),
+            ]);
+          } else {
+            entries.add(('$subject（すべて）', app.subjectSet(subject!)));
+            for (final c in app.repo.categories(subject!)) {
+              entries.add(('$subject｜$c', app.subjectSet(subject!, category: c)));
+            }
+          }
+          return ListView(
+            controller: controller,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 0, 20, 8),
+                child: Row(
+                  children: [
+                    if (subject != null)
+                      IconButton(
+                        icon: const Icon(Icons.arrow_back),
+                        tooltip: '科目の選択に戻る',
+                        onPressed: () => setSheet(() => subject = null),
+                      )
+                    else
+                      const SizedBox(width: 12),
+                    Text(
+                      subject == null
+                          ? (listen ? 'ながら聞きの範囲' : '解く範囲')
+                          : '$subject の分野',
+                      style: const TextStyle(
+                          fontSize: 17, fontWeight: FontWeight.w700),
+                    ),
+                  ],
+                ),
+              ),
+              if (subject == null)
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
+                  child: Row(
+                    children: [
+                      for (final s in Subjects.all) ...[
+                        Expanded(
+                          child: _SubjectButton(
+                            subject: s,
+                            count: app.repo.bySubject(s).length,
+                            last: app.store.lastStudied(
+                                app.repo.bySubject(s).map((q) => q.id)),
+                            onTap: () => setSheet(() => subject = s),
+                          ),
+                        ),
+                        if (s != Subjects.all.last) const SizedBox(width: 10),
+                      ],
+                    ],
+                  ),
+                ),
+              for (final (label, qs) in entries)
+                _RangeTile(
+                  label: label,
+                  qs: qs,
+                  listen: listen,
+                  onTap: () {
+                    Navigator.pop(ctx);
+                    _push(
+                      context,
+                      listen
+                          ? ListenScreen(questions: qs, title: label)
+                          : QuizScreen(
+                              questions: qs, title: label, trackRange: true),
+                    );
+                  },
+                ),
+              const SizedBox(height: 16),
+            ],
+          );
+        },
       ),
     ),
   );
+}
+
+class _SubjectButton extends StatelessWidget {
+  final String subject;
+  final int count;
+  final DateTime? last;
+  final VoidCallback onTap;
+  const _SubjectButton(
+      {required this.subject,
+      required this.count,
+      required this.last,
+      required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: AppColors.panel,
+      borderRadius: BorderRadius.circular(12),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(12),
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 14, 12, 14),
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(subject,
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 17,
+                            fontWeight: FontWeight.w700)),
+                    const SizedBox(height: 2),
+                    Text(
+                      '$count問${last == null ? '' : '・${formatLast(last!)}'}',
+                      style:
+                          const TextStyle(color: Colors.white70, fontSize: 12),
+                    ),
+                  ],
+                ),
+              ),
+              const Icon(Icons.chevron_right, color: Colors.white54),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _RangeTile extends StatelessWidget {
+  final String label;
+  final List<Question> qs;
+  final bool listen;
+  final VoidCallback onTap;
+  const _RangeTile(
+      {required this.label,
+      required this.qs,
+      required this.listen,
+      required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    final app = AppScope.read(context);
+    final isLast = !listen && label == app.store.lastRange;
+    final ids = qs.map((q) => q.id);
+    final last = app.store.lastStudied(ids);
+    String? sub;
+    if (!listen && qs.isNotEmpty) {
+      // 解いた問題数・最後に解いた日・前回どこまで進んだか
+      sub = '解いた ${app.store.doneCount(ids)}/${qs.length}問';
+      sub += last == null ? '　未着手' : '　最後：${formatLast(last)}';
+      if (isLast) {
+        sub += '　← 前回ここまで（${app.store.lastRangeDone}/${app.store.lastRangeTotal}問目）';
+      }
+    }
+    return ListTile(
+      enabled: qs.isNotEmpty,
+      selected: isLast,
+      selectedTileColor: const Color(0xFFFFF6E5),
+      title: Text(label),
+      subtitle: sub == null
+          ? null
+          : Text(sub,
+              style: TextStyle(
+                  fontSize: 12,
+                  color: isLast ? AppColors.ink : AppColors.muted)),
+      trailing: Text('${qs.length}問',
+          style: const TextStyle(color: AppColors.muted)),
+      onTap: onTap,
+    );
+  }
+}
+
+/// 最後に解いた日の表示（今日／昨日／N日前／M/D）
+String formatLast(DateTime t) {
+  final now = DateTime.now();
+  final d0 = DateTime(now.year, now.month, now.day);
+  final d1 = DateTime(t.year, t.month, t.day);
+  final days = d0.difference(d1).inDays;
+  if (days <= 0) return '今日';
+  if (days == 1) return '昨日';
+  if (days < 7) return '$days日前';
+  return '${t.month}/${t.day}';
 }
 
 void showSettingsSheet(BuildContext context) {

@@ -25,7 +25,7 @@ flutter:
     - assets/questions/
     - assets/voice/        # tools/make_voice.py が VOICEVOX 音声をここに作る
     # 図のある問題を追加するときは下の行を有効にして assets/images/ を作成
-    # - assets/images/
+    - assets/images/
   # Web 版でも日本語がオフラインで表示できるように同梱（tools/make_font.md 参照）
   fonts:
     - family: NotoSansJP

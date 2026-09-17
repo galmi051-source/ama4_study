@@ -12,17 +12,22 @@ class QStat {
   /// 次に出題すべき日時（ミリ秒）。0 は未学習。
   int due;
 
-  QStat({this.box = 0, this.correct = 0, this.wrong = 0, this.due = 0});
+  /// 最後に解いた日時（ミリ秒）。0 は未学習（古い記録には無い）。
+  int last;
+
+  QStat({this.box = 0, this.correct = 0, this.wrong = 0, this.due = 0, this.last = 0});
 
   bool get isNew => correct + wrong == 0;
 
-  Map<String, dynamic> toJson() => {'b': box, 'c': correct, 'w': wrong, 'd': due};
+  Map<String, dynamic> toJson() =>
+      {'b': box, 'c': correct, 'w': wrong, 'd': due, 'l': last};
 
   factory QStat.fromJson(Map<String, dynamic> j) => QStat(
         box: (j['b'] as num?)?.toInt() ?? 0,
         correct: (j['c'] as num?)?.toInt() ?? 0,
         wrong: (j['w'] as num?)?.toInt() ?? 0,
         due: (j['d'] as num?)?.toInt() ?? 0,
+        last: (j['l'] as num?)?.toInt() ?? 0,
       );
 }
 
@@ -121,6 +126,7 @@ class ProgressStore {
   void record(String id, bool correct) {
     final s = _stats.putIfAbsent(id, () => QStat());
     final now = DateTime.now();
+    s.last = now.millisecondsSinceEpoch;
     if (correct) {
       s.correct++;
       s.box = min(s.box + 1, intervalsDays.length - 1);
@@ -153,6 +159,16 @@ class ProgressStore {
     lastRangeDone = done;
     lastRangeTotal = total;
     saveSettings();
+  }
+
+  /// 範囲の中で最後に解いた日時。一度も解いていなければ null
+  DateTime? lastStudied(Iterable<String> ids) {
+    var m = 0;
+    for (final id in ids) {
+      final l = stat(id).last;
+      if (l > m) m = l;
+    }
+    return m == 0 ? null : DateTime.fromMillisecondsSinceEpoch(m);
   }
 
   /// 一度でも解いたことのある問題の数
