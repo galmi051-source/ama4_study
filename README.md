@@ -73,6 +73,15 @@ python tools/make_lecture.py all
 - 台本は `tools/lecture/<分野>.json`、図は `tools/lecture/fig/*.svg`、分野ごとの声は `tools/lecture/voices.json`
 - 出力は `lectures/<分野>.mp4`（動画）と `.m4a`（音声だけ）。Git には入れない
 - VOICEVOX 無しで試すときは `--engine sapi`（Windows 標準の音声）
+- 法規だけ／無線工学だけなら `python tools/make_lecture.py 法規`
+
+## 暗記シート（A4・4ページ）
+```bash
+python tools/make_sheet.py      # tools/sheet/暗記シート.html → lectures/暗記シート.pdf
+```
+
+## 図を使った問題
+`assets/questions/zukai.json`。図は `python tools/make_question_figs.py` で `assets/images/` に生成。
 
 ## 問題の追加
 `assets/questions/` に JSON を置いてビルドし直すだけで読み込まれます（ファイル名は自由）。
