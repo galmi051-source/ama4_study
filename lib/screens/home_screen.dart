@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../app_state.dart';
 import '../models/question.dart';
+import '../services/progress_store.dart';
 import '../services/tts_service.dart';
 import '../theme.dart';
 import '../widgets/s_meter.dart';
@@ -363,11 +364,17 @@ class _RangeTile extends StatelessWidget {
     final isLast = !listen && label == app.store.lastRange;
     final ids = qs.map((q) => q.id);
     final last = app.store.lastStudied(ids);
+    final hist = app.store.history(label);
     String? sub;
     if (!listen && qs.isNotEmpty) {
-      // 解いた問題数・最後に解いた日・前回どこまで進んだか
+      // 解いた問題数・最後に解いた日と過去の日付・前回どこまで進んだか
       sub = '解いた ${app.store.doneCount(ids)}/${qs.length}問';
-      sub += last == null ? '　未着手' : '　最後：${formatLast(last)}';
+      if (hist.isNotEmpty) {
+        sub += '　${hist.take(4).map((h) => formatLast(h.date)).join('・')}';
+        if (hist.length > 4) sub += '…';
+      } else {
+        sub += last == null ? '　未着手' : '　最後：${formatLast(last)}';
+      }
       if (isLast) {
         sub += '　← 前回ここまで（${app.store.lastRangeDone}/${app.store.lastRangeTotal}問目）';
       }
@@ -383,11 +390,68 @@ class _RangeTile extends StatelessWidget {
               style: TextStyle(
                   fontSize: 12,
                   color: isLast ? AppColors.ink : AppColors.muted)),
-      trailing: Text('${qs.length}問',
-          style: const TextStyle(color: AppColors.muted)),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text('${qs.length}問',
+              style: const TextStyle(color: AppColors.muted)),
+          if (!listen && hist.isNotEmpty)
+            IconButton(
+              tooltip: '学習した日の一覧',
+              icon: const Icon(Icons.history, size: 20),
+              color: AppColors.muted,
+              onPressed: () => showHistoryDialog(context, label, hist),
+            ),
+        ],
+      ),
       onTap: onTap,
     );
   }
+}
+
+/// ある範囲を学習した日の一覧（新しい順）
+void showHistoryDialog(BuildContext context, String label, List<StudyDay> hist) {
+  final total = hist.fold<int>(0, (s, h) => s + h.count);
+  showDialog<void>(
+    context: context,
+    builder: (c) => AlertDialog(
+      title: Text(label, style: const TextStyle(fontSize: 17)),
+      content: SizedBox(
+        width: 320,
+        child: ListView(
+          shrinkWrap: true,
+          children: [
+            Text('${hist.length}日・のべ$total問',
+                style: const TextStyle(color: AppColors.muted, fontSize: 13)),
+            const SizedBox(height: 8),
+            for (final h in hist)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 110,
+                      child: Text(
+                          '${h.date.year}/${h.date.month}/${h.date.day}',
+                          style: const TextStyle(
+                              fontFeatures: [FontFeature.tabularFigures()])),
+                    ),
+                    Text(formatLast(h.date),
+                        style: const TextStyle(color: AppColors.muted, fontSize: 12)),
+                    const Spacer(),
+                    Text('${h.count}問',
+                        style: const TextStyle(fontWeight: FontWeight.w600)),
+                  ],
+                ),
+              ),
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(onPressed: () => Navigator.pop(c), child: const Text('閉じる')),
+      ],
+    ),
+  );
 }
 
 /// 最後に解いた日の表示（今日／昨日／N日前／M/D）

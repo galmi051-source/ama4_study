@@ -31,6 +31,20 @@ class QStat {
       );
 }
 
+/// ある日にその範囲を何問解いたか
+class StudyDay {
+  final int day; // yyyymmdd
+  int count;
+  StudyDay({required this.day, required this.count});
+
+  DateTime get date =>
+      DateTime(day ~/ 10000, (day ~/ 100) % 100, day % 100);
+
+  Map<String, dynamic> toJson() => {'d': day, 'n': count};
+  factory StudyDay.fromJson(Map<String, dynamic> j) =>
+      StudyDay(day: (j['d'] as num).toInt(), count: (j['n'] as num?)?.toInt() ?? 0);
+}
+
 class ExamResult {
   final DateTime at;
   final int houki;
@@ -75,6 +89,7 @@ class ProgressStore {
   static const _kProgress = 'progress_v1';
   static const _kSettings = 'settings_v1';
   static const _kExams = 'exams_v1';
+  static const _kHistory = 'history_v1';
 
   /// 正解を重ねるごとに次の出題までの日数が伸びる。
   static const intervalsDays = [0, 1, 3, 7, 14, 30];
@@ -86,6 +101,9 @@ class ProgressStore {
   double rate = 0.5;
   int thinkSec = 4;
   bool autoRead = true;
+
+  /// 学習の履歴。範囲名 → [{d: 日付(yyyymmdd), n: 解いた問題数}]（新しい順）
+  final Map<String, List<StudyDay>> _history = {};
 
   /// 「分野を選んで解く」で最後に解いた範囲と進み具合（どこまでやったか表示用）
   String? lastRange;
@@ -112,6 +130,16 @@ class ProgressStore {
       lastRange = m['lastRange'] as String?;
       lastRangeDone = (m['lastRangeDone'] as num?)?.toInt() ?? 0;
       lastRangeTotal = (m['lastRangeTotal'] as num?)?.toInt() ?? 0;
+    }
+
+    final h = _prefs.getString(_kHistory);
+    if (h != null) {
+      final m = jsonDecode(h) as Map<String, dynamic>;
+      m.forEach((k, v) {
+        _history[k] = (v as List)
+            .map((x) => StudyDay.fromJson(Map<String, dynamic>.from(x as Map)))
+            .toList();
+      });
     }
 
     final e = _prefs.getString(_kExams);
@@ -161,6 +189,27 @@ class ProgressStore {
     saveSettings();
   }
 
+  static int _dayKey(DateTime t) => t.year * 10000 + t.month * 100 + t.day;
+
+  /// 範囲 label を今日 1 問解いたことを履歴に足す（同じ日は問題数を増やす）
+  void addHistory(String label) {
+    final today = _dayKey(DateTime.now());
+    final list = _history.putIfAbsent(label, () => []);
+    if (list.isNotEmpty && list.first.day == today) {
+      list.first.count++;
+    } else {
+      list.insert(0, StudyDay(day: today, count: 1));
+      if (list.length > 60) list.removeRange(60, list.length);
+    }
+    _prefs.setString(
+        _kHistory,
+        jsonEncode(_history
+            .map((k, v) => MapEntry(k, v.map((e) => e.toJson()).toList()))));
+  }
+
+  /// 範囲 label の学習履歴（新しい順）
+  List<StudyDay> history(String label) => List.unmodifiable(_history[label] ?? const []);
+
   /// 範囲の中で最後に解いた日時。一度も解いていなければ null
   DateTime? lastStudied(Iterable<String> ids) {
     var m = 0;
@@ -186,6 +235,8 @@ class ProgressStore {
     lastRange = null;
     lastRangeDone = 0;
     lastRangeTotal = 0;
+    _history.clear();
+    _prefs.remove(_kHistory);
     saveSettings();
     _prefs.remove(_kProgress);
     _prefs.remove(_kExams);

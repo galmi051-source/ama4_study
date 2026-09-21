@@ -67,6 +67,7 @@ class AppState extends ChangeNotifier {
   /// 「分野を選んで解く」の進み具合を記録（ホームと範囲選択に表示）
   void markRange(String label, int done, int total) {
     store.setLastRange(label, done, total);
+    store.addHistory(label);
     notifyListeners();
   }
 

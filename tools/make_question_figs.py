@@ -53,8 +53,8 @@ def fig(name):
 def _():
     f = QFig()
     f.line(60, 156, 140, 156); f.line(140, 90, 140, 222)
-    f.line(140, 90, 200, 90); f.resistor(200, 90, 100, "20Ω"); f.line(300, 90, 360, 90)
-    f.line(140, 222, 200, 222); f.resistor(200, 222, 100); f.text(250, 250, "20Ω", 18, MUTED); f.line(300, 222, 360, 222)
+    f.line(140, 90, 200, 90); f.resistor(200, 90, 100, "30Ω"); f.line(300, 90, 360, 90)
+    f.line(140, 222, 200, 222); f.resistor(200, 222, 100); f.text(250, 250, "60Ω", 18, MUTED); f.line(300, 222, 360, 222)
     f.line(360, 90, 360, 222); f.line(360, 156, 440, 156)
     f.circle(52, 156, 6); f.circle(448, 156, 6)
     f.text(250, 295, "端子間の合成抵抗は？", 18, MUTED)
@@ -67,18 +67,18 @@ def _():
     f.line(80, 100, 80, 220); f.line(66, 150, 94, 150, w=3); f.line(72, 170, 88, 170, w=6)
     f.text(40, 165, "E", 22, INK, bold=True)
     f.line(80, 100, 200, 100); f.circle(240, 100, 32, label="A", size=24); f.line(272, 100, 420, 100)
-    f.text(240, 50, "2A", 22, RED, bold=True)
+    f.text(240, 50, "3A", 22, RED, bold=True)
     f.line(420, 100, 420, 130); f.parts.append(f'<rect x="408" y="130" width="24" height="60" fill="#fff" stroke="{INK}" stroke-width="2.5"/>')
-    f.text(460, 165, "10Ω", 22, INK, bold=True)
+    f.text(460, 165, "5Ω", 22, INK, bold=True)
     f.line(420, 190, 420, 220); f.line(80, 220, 420, 220)
     f.text(250, 285, "電源 E の電圧は？", 18, MUTED)
     return f
 
 
-@fig("z_symbol_diode")
+@fig("z_symbol_cap")
 def _():
     f = QFig()
-    f.line(120, 156, 230, 156); f.diode(260, 156, 26); f.line(286, 156, 400, 156)
+    f.line(120, 156, 250, 156); f.line(250, 120, 250, 192, w=6); f.line(270, 120, 270, 192, w=6); f.line(270, 156, 400, 156)
     f.text(260, 260, "この記号の部品は？", 18, MUTED)
     return f
 
@@ -100,24 +100,26 @@ def _():
 def _():
     f = QFig()
     f.line(80, 170, 440, 170, w=4)
-    f.line(140, 80, 140, 260, INK, 8); f.line(240, 95, 240, 245, INK, 8); f.line(330, 105, 330, 235, INK, 8); f.line(400, 110, 400, 230, INK, 8)
-    f.line(240, 170, 240, 175); f.text(240, 290, "給電", 16, MUTED)
-    f.label(100, 60, "ア"); f.label(420, 60, "イ")
-    f.arrow(78, 60, 30, 60, MUTED, 3); f.arrow(442, 60, 490, 60, MUTED, 3)
-    f.text(260, 40, "八木アンテナ（上から見た図）", 16, MUTED)
+    f.line(140, 75, 140, 265, INK, 8); f.line(260, 95, 260, 245, INK, 8); f.line(380, 110, 380, 230, INK, 8)
+    f.line(252, 170, 252, 200); f.line(268, 170, 268, 200); f.text(260, 225, "給電", 14, MUTED)
+    f.label(140, 292, "ア"); f.label(260, 292, "イ"); f.label(380, 292, "ウ")
+    f.text(260, 40, "八木アンテナ（上から見た図・長さの違いに注目）", 15, MUTED)
     return f
 
 
 @fig("z_meters")
 def _():
     f = QFig()
-    f.line(80, 90, 80, 230); f.line(66, 150, 94, 150, w=3); f.line(72, 170, 88, 170, w=6); f.text(45, 165, "電源", 14, MUTED)
-    f.line(80, 90, 170, 90); f.circle(200, 90, 28); f.line(228, 90, 400, 90)
+    f.line(120, 90, 120, 230); f.line(106, 150, 134, 150, w=3); f.line(112, 170, 128, 170, w=6); f.text(120, 256, "電源", 14, MUTED)
+    f.line(120, 90, 200, 90); f.parts.append(f'<circle cx="230" cy="90" r="26" fill="#fff" stroke="{INK}" stroke-width="2.5" stroke-dasharray="5,4"/>'); f.line(256, 90, 400, 90)
     f.line(400, 90, 400, 120); f.parts.append(f'<rect x="388" y="120" width="24" height="70" fill="#fff" stroke="{INK}" stroke-width="2.5"/>')
-    f.text(440, 160, "負荷", 18); f.line(400, 190, 400, 230); f.line(80, 230, 400, 230)
-    f.line(300, 90, 300, 125); f.circle(300, 155, 28); f.line(300, 183, 300, 230)
-    f.label(200, 90, "ア"); f.label(300, 155, "イ")
-    f.text(250, 290, "ア・イは計器。負荷の電流を測るのはどちら？", 16, MUTED)
+    f.text(440, 160, "負荷", 18); f.line(400, 190, 400, 230); f.line(120, 230, 400, 230)
+    f.line(320, 90, 320, 125); f.parts.append(f'<circle cx="320" cy="155" r="26" fill="#fff" stroke="{INK}" stroke-width="2.5" stroke-dasharray="5,4"/>'); f.line(320, 181, 320, 230)
+    f.line(120, 120, 60, 120); f.line(60, 120, 60, 200); f.line(60, 200, 120, 200)
+    f.parts.append(f'<circle cx="60" cy="160" r="26" fill="#fff" stroke="{INK}" stroke-width="2.5" stroke-dasharray="5,4"/>')
+    f.line(60, 134, 60, 120); f.line(60, 186, 60, 200)
+    f.label(230, 90, "ア"); f.label(320, 155, "イ"); f.label(60, 160, "ウ")
+    f.text(260, 290, "電流計をつなぐ位置はどこ？（点線の丸が候補）", 15, MUTED)
     return f
 
 
@@ -125,14 +127,14 @@ def _():
 def _():
     f = QFig()
     import math
-    f.wave(50, 160, 300, 70, 16, INK, env=lambda t: 2 / 3 + 1 / 3 * math.sin(2 * math.pi * 1.5 * t))
+    f.wave(50, 160, 300, 70, 16, INK, env=lambda t: 0.625 + 0.375 * math.sin(2 * math.pi * 1.5 * t))
     f.line(50, 160, 350, 160, mf.LINE, 1)
     f.line(370, 160, 370, 90, RED, 2); f.line(365, 90, 375, 90, RED, 2); f.line(365, 160, 375, 160, RED, 2)
-    f.text(385, 128, "90V", 18, RED, anchor="start", bold=True)
-    f.line(430, 160, 430, 113, BLUE, 2); f.line(425, 113, 435, 113, BLUE, 2); f.line(425, 160, 435, 160, BLUE, 2)
-    f.text(445, 140, "60V", 18, BLUE, anchor="start", bold=True)
-    f.line(50, 90, 350, 90, RED, 1.5, dash="5,5"); f.line(50, 113, 350, 113, BLUE, 1.5, dash="5,5")
-    f.text(200, 270, "変調波の最大振幅 90V、搬送波の振幅 60V", 16, MUTED)
+    f.text(385, 128, "80V", 18, RED, anchor="start", bold=True)
+    f.line(430, 160, 430, 116, BLUE, 2); f.line(425, 116, 435, 116, BLUE, 2); f.line(425, 160, 435, 160, BLUE, 2)
+    f.text(445, 140, "50V", 18, BLUE, anchor="start", bold=True)
+    f.line(50, 90, 350, 90, RED, 1.5, dash="5,5"); f.line(50, 116, 350, 116, BLUE, 1.5, dash="5,5")
+    f.text(200, 270, "変調波の最大振幅 80V、搬送波の振幅 50V", 16, MUTED)
     return f
 
 
@@ -142,9 +144,9 @@ def _():
     f.box(20, 110, 100, 70, "交流\n100V", size=16); f.arrow(120, 145, 150, 145)
     f.box(150, 110, 100, 70, "変圧器", size=17); f.arrow(250, 145, 280, 145)
     f.box(280, 110, 100, 70, "", fill="#FFF6E5", stroke=RED); f.label(330, 145, "ア")
-    f.arrow(380, 145, 410, 145); f.box(410, 110, 100, 70, "平滑回路", size=17)
+    f.arrow(380, 145, 410, 145); f.box(410, 110, 100, 70, "", fill="#FFF6E5", stroke=RED); f.label(460, 145, "イ")
     f.text(460, 215, "→ 直流", 16, MUTED)
-    f.text(260, 270, "直流電源装置の構成。アに入る回路は？", 16, MUTED)
+    f.text(260, 270, "直流電源装置の構成。ア・イに入る回路は？", 16, MUTED)
     return f
 
 
@@ -159,8 +161,8 @@ def _():
         if i < 4:
             f.arrow(x + w, 120, boxes[i + 1][1], 120)
     f.label(170, 120, "ア")
-    f.box(130, 200, 80, 50, "局部\n発振器", size=13); f.arrow(170, 200, 170, 150)
-    f.text(260, 290, "スーパヘテロダイン受信機。アに入るのは？", 16, MUTED)
+    f.box(130, 200, 80, 50, "", fill="#FFF6E5", stroke=RED); f.label(170, 225, "イ"); f.arrow(170, 200, 170, 150)
+    f.text(260, 290, "スーパヘテロダイン受信機。ア・イに入るのは？", 16, MUTED)
     return f
 
 
