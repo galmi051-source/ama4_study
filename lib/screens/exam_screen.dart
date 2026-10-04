@@ -10,9 +10,12 @@ import '../theme.dart';
 import '../widgets/question_widgets.dart';
 import 'quiz_screen.dart';
 
-/// 本番と同じ 法規12問＋無線工学12問／60分。採点まで正解は表示しない。
+/// 模擬試験。subject を指定しなければ本番と同じ 法規12問＋無線工学12問／60分、
+/// 指定すればその科目だけ 12問／30分。採点まで正解は表示しない。
 class ExamScreen extends StatefulWidget {
-  const ExamScreen({super.key});
+  /// null なら両科目（本番と同じ）。'法規' / '無線工学' ならその科目だけ
+  final String? subject;
+  const ExamScreen({super.key, this.subject});
 
   @override
   State<ExamScreen> createState() => _ExamScreenState();
@@ -20,14 +23,17 @@ class ExamScreen extends StatefulWidget {
 
 class _ExamScreenState extends State<ExamScreen> {
   static const perSubject = 12;
-  static const examTime = Duration(minutes: 60);
+
+  /// 本番は2科目で60分なので、1科目だけなら半分の30分
+  Duration get examTime =>
+      Duration(minutes: widget.subject == null ? 60 : 30);
 
   late final AppState app;
   late final List<Question> qs;
   late final DateTime endAt;
   final Map<int, int> answers = {};
   Timer? timer;
-  Duration left = examTime;
+  late Duration left = examTime;
   int index = 0;
   bool finished = false;
 
@@ -35,9 +41,10 @@ class _ExamScreenState extends State<ExamScreen> {
   void initState() {
     super.initState();
     app = AppScope.read(context);
+    // 本番と同じ出題：各科目からランダムに12問（subject 指定時はその科目だけ）
     qs = [
-      ...app.subjectSet(Subjects.houki).take(perSubject),
-      ...app.subjectSet(Subjects.kougaku).take(perSubject),
+      for (final s in widget.subject == null ? Subjects.all : [widget.subject!])
+        ...app.examSet(s, perSubject),
     ];
     endAt = DateTime.now().add(examTime);
     timer = Timer.periodic(const Duration(seconds: 1), (_) {
@@ -56,6 +63,9 @@ class _ExamScreenState extends State<ExamScreen> {
     app.tts.stop();
     super.dispose();
   }
+
+  String get title =>
+      widget.subject == null ? '模擬試験' : '模擬試験｜${widget.subject}';
 
   String get clock {
     final m = left.inMinutes.toString().padLeft(2, '0');
@@ -113,9 +123,15 @@ class _ExamScreenState extends State<ExamScreen> {
       kougaku: k,
       kougakuTotal: kt,
     );
+    // 間違えた問題を分野ごとにまとめる（結果画面から分野別に復習できるように）
+    final byCategory = <String, List<Question>>{};
+    for (final q in wrong) {
+      byCategory.putIfAbsent('${q.subject}｜${q.category}', () => []).add(q);
+    }
     app.addExam(r);
     Navigator.of(context).pushReplacement(MaterialPageRoute(
-      builder: (_) => ExamResultScreen(result: r, wrong: wrong),
+      builder: (_) =>
+          ExamResultScreen(result: r, wrong: wrong, byCategory: byCategory),
     ));
   }
 
@@ -123,7 +139,7 @@ class _ExamScreenState extends State<ExamScreen> {
   Widget build(BuildContext context) {
     if (qs.isEmpty) {
       return Scaffold(
-        appBar: AppBar(title: const Text('模擬試験')),
+        appBar: AppBar(title: Text(title)),
         body: const Center(child: Text('問題がありません')),
       );
     }
@@ -132,7 +148,7 @@ class _ExamScreenState extends State<ExamScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('模擬試験'),
+        title: Text(title),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 16),
@@ -258,7 +274,14 @@ class _ExamScreenState extends State<ExamScreen> {
 class ExamResultScreen extends StatelessWidget {
   final ExamResult result;
   final List<Question> wrong;
-  const ExamResultScreen({super.key, required this.result, required this.wrong});
+
+  /// 「科目｜分野」→ 間違えた問題
+  final Map<String, List<Question>> byCategory;
+  const ExamResultScreen(
+      {super.key,
+      required this.result,
+      required this.wrong,
+      this.byCategory = const {}});
 
   Widget _subjectRow(String name, int c, int t, bool pass) {
     final score = t == 12 ? '（${c * 5}点）' : '';
@@ -304,15 +327,30 @@ class ExamResultScreen extends StatelessWidget {
                     color: result.pass ? AppColors.correct : AppColors.ink)),
           ),
           const SizedBox(height: 4),
-          const Center(
-            child: Text('両科目とも12問中8問（40点）以上で合格',
-                style: TextStyle(color: AppColors.muted, fontSize: 13)),
+          Center(
+            child: Text(
+                result.singleSubject
+                    ? '12問中8問（40点）以上で合格'
+                    : '両科目とも12問中8問（40点）以上で合格',
+                style: const TextStyle(color: AppColors.muted, fontSize: 13)),
           ),
           const SizedBox(height: 20),
-          _subjectRow('法規', result.houki, result.houkiTotal, result.houkiPass),
-          _subjectRow('無線工学', result.kougaku, result.kougakuTotal,
-              result.kougakuPass),
+          if (result.houkiTotal > 0)
+            _subjectRow(
+                '法規', result.houki, result.houkiTotal, result.houkiPass),
+          if (result.kougakuTotal > 0)
+            _subjectRow('無線工学', result.kougaku, result.kougakuTotal,
+                result.kougakuPass),
           const SizedBox(height: 16),
+          if (byCategory.isNotEmpty) ...[
+            const Text('間違えた分野（押すとその分野を復習）',
+                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
+            const SizedBox(height: 8),
+            for (final e in (byCategory.entries.toList()
+              ..sort((a, b) => b.value.length.compareTo(a.value.length))))
+              _WeakCategoryTile(label: e.key, wrong: e.value),
+            const SizedBox(height: 16),
+          ],
           if (wrong.isNotEmpty)
             FilledButton(
               onPressed: () => Navigator.of(context).pushReplacement(
@@ -330,7 +368,7 @@ class ExamResultScreen extends StatelessWidget {
           ),
           if (wrong.isNotEmpty) ...[
             const SizedBox(height: 24),
-            const Text('間違えた問題',
+            const Text('間違えた問題の解説',
                 style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
             const SizedBox(height: 8),
             for (final q in wrong)
@@ -340,6 +378,70 @@ class ExamResultScreen extends StatelessWidget {
               ),
           ],
         ],
+      ),
+    );
+  }
+}
+
+/// 間違えた分野のカード。押すとその分野を復習できる。
+/// 「この試験で間違えた問題だけ」と「この分野の全問」を選べる。
+class _WeakCategoryTile extends StatelessWidget {
+  final String label;
+  final List<Question> wrong;
+  const _WeakCategoryTile({required this.label, required this.wrong});
+
+  @override
+  Widget build(BuildContext context) {
+    final app = AppScope.read(context);
+    final parts = label.split('｜');
+    final all = app.subjectSet(parts[0], category: parts.length > 1 ? parts[1] : null);
+    return Container(
+      margin: const EdgeInsets.only(bottom: 8),
+      decoration: BoxDecoration(
+        color: const Color(0xFFFFF6E5),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: AppColors.amber),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(14, 10, 10, 10),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(label,
+                      style: const TextStyle(
+                          fontSize: 15, fontWeight: FontWeight.w700)),
+                  const SizedBox(height: 2),
+                  Text('${wrong.length}問まちがい・この分野は全${all.length}問',
+                      style: const TextStyle(
+                          color: AppColors.muted, fontSize: 12)),
+                ],
+              ),
+            ),
+            TextButton(
+              style: TextButton.styleFrom(minimumSize: const Size(0, 40)),
+              onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                builder: (_) =>
+                    QuizScreen(questions: List.of(wrong), title: '$label の復習'),
+              )),
+              child: Text('この${wrong.length}問'),
+            ),
+            FilledButton(
+              style: FilledButton.styleFrom(
+                  minimumSize: const Size(0, 40),
+                  padding: const EdgeInsets.symmetric(horizontal: 14)),
+              onPressed: all.isEmpty
+                  ? null
+                  : () => Navigator.of(context).push(MaterialPageRoute(
+                        builder: (_) => QuizScreen(
+                            questions: all, title: label, trackRange: true),
+                      )),
+              child: const Text('分野ごと'),
+            ),
+          ],
+        ),
       ),
     );
   }

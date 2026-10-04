@@ -92,8 +92,8 @@ class HomeScreen extends StatelessWidget {
           _ActionTile(
             icon: Icons.timer_outlined,
             title: '模擬試験',
-            subtitle: '法規12問・無線工学12問／60分',
-            onTap: () => _push(context, const ExamScreen()),
+            subtitle: '本番と同じ24問／60分・科目だけの12問／30分',
+            onTap: () => showExamSheet(context),
           ),
         ],
       ),
@@ -197,6 +197,51 @@ class _WarningCard extends StatelessWidget {
 }
 
 /// 出題範囲を選ぶシート（ながら聞き／分野別の両方で使う）
+/// 模擬試験の種類を選ぶシート（本番と同じ24問／法規だけ／無線工学だけ）
+void showExamSheet(BuildContext context) {
+  final app = AppScope.read(context);
+  showModalBottomSheet<void>(
+    context: context,
+    showDragHandle: true,
+    builder: (ctx) => SafeArea(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Padding(
+            padding: EdgeInsets.fromLTRB(20, 0, 20, 8),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text('模擬試験',
+                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700)),
+            ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.timer_outlined, color: AppColors.panel),
+            title: const Text('本番と同じ（24問・60分）'),
+            subtitle: const Text('法規12問＋無線工学12問。各科目8問以上で合格'),
+            onTap: () {
+              Navigator.pop(ctx);
+              _push(context, const ExamScreen());
+            },
+          ),
+          for (final s in Subjects.all)
+            ListTile(
+              enabled: app.repo.bySubject(s).isNotEmpty,
+              leading: const Icon(Icons.timer_outlined, color: AppColors.panel),
+              title: Text('$s だけ（12問・30分）'),
+              subtitle: Text('${app.repo.bySubject(s).length}問からランダムに12問'),
+              onTap: () {
+                Navigator.pop(ctx);
+                _push(context, ExamScreen(subject: s));
+              },
+            ),
+          const SizedBox(height: 16),
+        ],
+      ),
+    ),
+  );
+}
+
 /// 出題範囲を選ぶシート（ながら聞き／分野別の両方で使う）。
 /// 最初に「今日の復習・苦手・すべて」と科目（法規／無線工学）を出し、
 /// 科目を選ぶとその分野の一覧に切り替わる（全部を一度に並べると長くなるため）。

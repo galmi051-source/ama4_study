@@ -64,6 +64,34 @@ class AppState extends ChangeNotifier {
     return [...fresh, ...seen];
   }
 
+  /// 模擬試験の出題：分野がかたよらないよう、分野ごとに1問ずつ取りながら n 問そろえる
+  List<Question> examSet(String subject, int n) {
+    final byCategory = <String, List<Question>>{};
+    for (final q in repo.bySubject(subject)) {
+      byCategory.putIfAbsent(q.category, () => []).add(q);
+    }
+    final buckets = byCategory.values.toList()..shuffle();
+    for (final b in buckets) {
+      b.shuffle();
+    }
+    final out = <Question>[];
+    var round = 0;
+    while (out.length < n) {
+      var added = false;
+      for (final b in buckets) {
+        if (round < b.length) {
+          out.add(b[round]);
+          added = true;
+          if (out.length >= n) break;
+        }
+      }
+      if (!added) break; // 問題が足りない
+      round++;
+    }
+    out.shuffle();
+    return out;
+  }
+
   /// 「分野を選んで解く」の進み具合を記録（ホームと範囲選択に表示）
   void markRange(String label, int done, int total) {
     store.setLastRange(label, done, total);

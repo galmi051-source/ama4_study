@@ -66,7 +66,13 @@ class ExamResult {
 
   bool get houkiPass => passes(houki, houkiTotal);
   bool get kougakuPass => passes(kougaku, kougakuTotal);
-  bool get pass => houkiPass && kougakuPass;
+
+  /// 出題された科目だけで判定（科目別の模擬試験では片方が 0 問になる）
+  bool get pass =>
+      (houkiTotal == 0 || houkiPass) && (kougakuTotal == 0 || kougakuPass);
+
+  /// 1 科目だけの模擬試験か
+  bool get singleSubject => houkiTotal == 0 || kougakuTotal == 0;
 
   Map<String, dynamic> toJson() => {
         'at': at.millisecondsSinceEpoch,
