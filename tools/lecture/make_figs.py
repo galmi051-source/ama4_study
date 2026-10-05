@@ -620,10 +620,10 @@ def fig_license_timeline():
     f.text(260, 138, "有効期間 5 年", 24, RED, bold=True)
     f.parts.append(f'<rect x="300" y="190" width="147" height="20" fill="{AMBER}" opacity="0.8"/>')
     f.text(373, 310, "再免許の申請期間", 18, RED, bold=True)
-    f.text(373, 336, "満了前 1 か月以上 1 年以内", 18, INK)
-    f.text(373, 358, "（改正前の問題では 6 か月以内）", 14, MUTED)
+    f.text(373, 336, "満了前 1 か月以上 6 か月以内", 18, INK)
+    f.text(373, 358, "（2023年改正。改正前は 1 年以内）", 14, MUTED)
     f.line(447, 205, 447, 260, MUTED, 1.5, dash="4,4"); f.text(447, 275, "1 か月前", 12, MUTED)
-    f.line(300, 205, 300, 260, MUTED, 1.5, dash="4,4"); f.text(300, 275, "1 年前", 12, MUTED)
+    f.line(300, 205, 300, 260, MUTED, 1.5, dash="4,4"); f.text(300, 275, "6 か月前", 12, MUTED)
     f.text(260, 388, "無線従事者の免許証には有効期間がない", 14, MUTED)
     f.save("fig_license_timeline")
 
