@@ -74,6 +74,8 @@ python tools/make_lecture.py all
 - 出力は `lectures/<分野>.mp4`（動画）と `.m4a`（音声だけ）。Git には入れない
 - VOICEVOX 無しで試すときは `--engine sapi`（Windows 標準の音声）
 - 法規だけ／無線工学だけなら `python tools/make_lecture.py 法規`
+- 各分野に「過去問攻略」編（`<分野>・過去問攻略.json`）があり、過去問で出る論点を図つきで補足。声は元の分野の設定を引き継ぐ
+- 図は `tools/lecture/make_figs.py`（基本編）と `make_figs2.py`（過去問攻略編）で生成。台本の全文は `tools/lecture/台本_過去問攻略.txt`
 
 ## 暗記シート（A4・4ページ）
 ```bash

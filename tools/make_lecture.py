@@ -81,15 +81,21 @@ EDGE_CANDIDATES = [
 ]
 
 SLIDE_CSS = """
+/* Yu Gothic UI の太字は Ω（オーム）を正しく描けないので、その字だけ Segoe UI を使う */
+@font-face { font-family: "OhmFix"; src: local("Segoe UI"); unicode-range: U+03A9, U+2126; font-weight: 400; }
+@font-face { font-family: "OhmFix"; src: local("Segoe UI Bold"); unicode-range: U+03A9, U+2126; font-weight: 700; }
 * { box-sizing: border-box; }
 html, body { margin: 0; width: 1280px; height: 720px; overflow: hidden;
-  background: #F2F4F6; font-family: "Yu Gothic UI", "Meiryo", "Noto Sans JP", sans-serif; color: #1A1F24; }
+  background: #F2F4F6; font-family: "OhmFix", "Yu Gothic UI", "Meiryo", "Noto Sans JP", sans-serif; color: #1A1F24; }
+svg text { font-family: "OhmFix", "Yu Gothic UI", "Meiryo", sans-serif; }
 .top { background: #1E2B38; color: #fff; height: 84px; padding: 0 40px; display: flex; align-items: center; gap: 18px; }
 .top .cat { background: #F5B041; color: #142029; font-weight: 700; padding: 4px 12px; border-radius: 6px; font-size: 22px; }
 .top .title { font-size: 34px; font-weight: 700; }
 .body { display: flex; height: 592px; padding: 28px 40px; gap: 32px; }
 .text { flex: 1 1 0; font-size: 30px; line-height: 1.55; }
 .text.wide { flex: 1 1 100%; }
+.text.dense { font-size: 26px; line-height: 1.5; }
+.text.dense li { margin-bottom: 10px; }
 .text ul { margin: 0; padding-left: 1.1em; }
 .text li { margin-bottom: 14px; }
 .text li.k { color: #C8463D; font-weight: 700; }
@@ -124,6 +130,7 @@ def load_script(name):
         sys.exit(f"台本がありません: {p}")
     s = json.loads(p.read_text(encoding="utf-8"))
     s.setdefault("category", name)
+    s["_name"] = name   # 出力ファイル名（台本のファイル名。例: 電源・過去問攻略）
     s.setdefault("subject", "無線工学")
     s.setdefault("title", s["category"])
     return s
@@ -162,6 +169,10 @@ def slide_html(script, i, slide, total):
                 sys.exit(f"図がありません: {fp}")
             fig = f'<div class="fig">{fp.read_text(encoding="utf-8")}</div>'
         wide = "" if fig else " wide"
+        # 文字が多いスライドは字を少し小さくしてはみ出さないようにする
+        chars = sum(len(l.replace("**", "")) for l in slide.get("lines", []))
+        if chars > (150 if fig else 300):
+            wide += " dense"
         body = (f'<div class="top"><span class="cat">{cat}</span>'
                 f'<span class="title">{html.escape(slide.get("title", ""))}</span></div>'
                 f'<div class="body"><div class="text{wide}"><ul>{"".join(items)}</ul></div>{fig}</div>')
@@ -181,7 +192,7 @@ def render_png(edge, html_path, png_path):
     r = subprocess.run([edge, "--headless=new", "--disable-gpu", "--hide-scrollbars", "--no-first-run",
                         f"--user-data-dir={profile}", f"--window-size={W},{H}",
                         f"--screenshot={png_path}", html_path.as_uri()],
-                       capture_output=True, text=True, timeout=120, env=env)
+                       capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=120, env=env)
     if not Path(png_path).exists():
         raise RuntimeError(f"Edge でスライドを画像にできませんでした（exit {r.returncode}）: {r.stderr.strip()[-300:]}")
 
@@ -320,7 +331,7 @@ def build(script, engine, speaker, speed, edge, audio_only):
     slides = script["slides"]
     total = len(slides)
     OUT_DIR.mkdir(exist_ok=True)
-    name = script["category"]
+    name = script.get("_name", script["category"])
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         segs = []
@@ -404,7 +415,8 @@ def main():
     for n in names:
         script = load_script(n)
         speed = a.speed if a.speed is not None else float(script.get("speed", voices.get("speed", SPEED)))
-        default = script.get("speaker", voices.get(n, voices.get("default", mv.SPEAKER)))
+        # 「電源・過去問攻略」のような続編は、元の分野（電源）の声を引き継ぐ
+        default = script.get("speaker", voices.get(n, voices.get(script["category"], voices.get("default", mv.SPEAKER))))
         if common is not None:
             speaker = common
         elif a.engine == "voicevox":
