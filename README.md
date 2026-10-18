@@ -65,6 +65,14 @@ flutter run
 - 読み間違いを直す：`python tools/make_voice.py --only-daihon` で台本だけ作って確認 → 全問に効かせたい読みは `tools/yomi.tsv` に「表記<TAB>読み」で追加、その問題だけなら JSON の `readQuestion` / `readExplanation` に書く
 - 読み上げ速度の設定は音声ファイルの再生速度にも反映されます（0.5 が等倍）
 
+## 音声と講義動画をまとめて作る（おすすめ）
+```bash
+python tools/make_all.py
+```
+最初に「アプリの声」「講義動画の声」「終わったら公開するか」を選ぶと、あとは放置で
+講義動画32本 → 問題アプリの音声 → （選んだ場合）git push まで自動で進みます。
+失敗しても自動でやり直し、実行中はスリープしません。記録は `lectures/make_all.log`。
+
 ## 講義動画を作る（分野ごとの解説スライド＋読み上げ）
 ```bash
 python tools/make_lecture.py 電源          # VOICEVOX を起動しておく

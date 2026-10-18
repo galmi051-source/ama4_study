@@ -289,8 +289,9 @@ def choose_speaker(name, default, speed):
     names = {sid: f"{n}（{st}）" for sid, n, st in styles}
     if default not in names:
         default = styles[0][0]
-    if not sys.stdin.isatty():
-        print(f"ボイス: {default} {names[default]}")
+    # 入力できないとき・make_all.py から自動で動かすときは設定のまま（Windows では NUL も端末扱いになるため環境変数で判定）
+    if not sys.stdin.isatty() or os.environ.get("AMA4_AUTO"):
+        print(f"ボイス: {name} → {default} {names[default]}")
         return default
     print(f"\n「{name}」のボイスを選んでください（番号 スタイル）")
     mv.list_speakers(styles)
@@ -423,13 +424,13 @@ def main():
             speaker = choose_speaker(n, default, speed)
         else:
             speaker = default
-        if a.engine == "voicevox" and speaker != voices.get(n):
+        if a.engine == "voicevox" and speaker != default:   # 選び直したときだけ保存（引き継いだ声は保存しない）
             save_voice(n, speaker)
         plan.append((script, speaker, speed))
     if len(plan) > 1:
         print("\n作る動画:")
         for script, speaker, speed in plan:
-            print(f"  {script['category']}　話者 {speaker}　速さ {speed}")
+            print(f"  {script['_name']}　話者 {speaker}　速さ {speed}")
         print("ここからは自動で進みます（終わるまで放置で OK）\n")
     # 1 つ失敗しても止めずに次へ進み、最後にまとめて知らせる
     failed = []

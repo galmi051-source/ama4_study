@@ -29,6 +29,7 @@ VOICEVOX で読み上げ音声をまとめて作るスクリプト（標準ラ�
 import argparse
 import hashlib
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -381,7 +382,7 @@ def main():
             continue
         todo.append((key, text, h))
     print(f"作成する音声: {len(todo)} 件（変更なし {len(rows) - len(todo)} 件はスキップ）")
-    if previous is not None and previous != speaker and len(todo) > 50 and sys.stdin.isatty():
+    if previous is not None and previous != speaker and len(todo) > 50 and sys.stdin.isatty() and not os.environ.get("AMA4_AUTO"):
         if input("ボイスが変わったので全体を作り直します。続けますか？ [Y/n]: ").strip().lower() in ("n", "no"):
             SETTING.write_text(json.dumps({"speaker": previous}), encoding="utf-8")
             sys.exit("中止しました（ボイスは前回のまま）")
